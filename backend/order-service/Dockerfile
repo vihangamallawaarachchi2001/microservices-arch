@@ -1,5 +1,5 @@
 # Build Stage: Compile the app with JDK 21
-FROM maven:3.8.6-eclipse-temurin-21 AS build
+FROM maven:3.9.9-eclipse-temurin-11 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
