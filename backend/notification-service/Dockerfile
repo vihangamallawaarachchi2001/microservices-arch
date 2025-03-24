@@ -1,5 +1,6 @@
 # Use official Python image as base
 FROM python:3.11-slim
+RUN pip install --upgrade pip
 
 # Set working directory
 WORKDIR /app

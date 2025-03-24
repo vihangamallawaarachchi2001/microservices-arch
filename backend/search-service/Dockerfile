@@ -1,5 +1,6 @@
 # Use official Python image as base
 FROM python
+RUN pip install --upgrade pip
 
 # Set working directory
 WORKDIR /app

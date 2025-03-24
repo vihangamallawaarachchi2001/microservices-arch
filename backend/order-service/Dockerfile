@@ -1,14 +1,21 @@
-# Use a lightweight OpenJDK 21 runtime image
-FROM eclipse-temurin:21-jdk-alpine as builder
+# For all Java services (order, review, restaurant)
+# Stage 1: Build
+FROM maven:3.9.6-eclipse-temurin-21 AS builder 
 
-# Set working directory inside the container
 WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Copy the JAR file from the build context
-COPY target/order-service.jar app.jar
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Expose the port used by the Spring Boot service
+# Stage 2: Runtime
+FROM eclipse-temurin:21-jdk-jammy  
+
+WORKDIR /app
+# 1. Fix stage reference casing
+# 2. Use wildcard for JAR name
+COPY --from=builder /app/target/*.jar app.jar 
+
 EXPOSE 8080
-
-# Run the application with optimized JVM flags
 CMD ["java", "-jar", "app.jar"]
