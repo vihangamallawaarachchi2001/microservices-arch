@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+  auth-service:
+    build: ./backend/auth-service
+    ports:
+      - "3001:3000"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/auth-service
+    depends_on:
+      - mongo
+
+  user-service:
+    build: ./backend/user-service
+    ports:
+      - "3002:300"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/user-service
+    depends_on:
+      - mongo
+
+  restaurant-service:
+    build: ./backend/restaurant-service
+    ports:
+      - "8081:8080"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/restaurant-service
+    depends_on:
+      - mongo
+
+  order-service:
+    build: ./backend/order-service
+    ports:
+      - "8082:8080"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/order-service
+    depends_on:
+      - mongo
+
+  payment-service:
+    build: ./backend/payment-service
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/payment-service
+    depends_on:
+      - mongo
+
+  delivery-service:
+    build: ./backend/delivery-service
+    ports:
+      - "4001:4000"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/delivery-service
+    depends_on:
+      - mongo
+
+  notification-service:
+    build: ./backend/notification-service
+    ports:
+      - "6000:6000"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/notification-service
+    depends_on:
+      - mongo
+
+  search-service:
+    build: ./backend/search-service
+    ports:
+      - "6001:6000"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/search-service
+    depends_on:
+      - mongo
+
+  review-service:
+    build: ./backend/review-service
+    ports:
+      - "8083:8080"
+    environment:
+      - MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/review-service
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+
+
