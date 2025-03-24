@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 6000
 
 # Run FastAPI app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "4002"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "6000"]

@@ -1,5 +1,5 @@
 # Use official Python image as base
-FROM python:3.11-slim
+FROM python
 
 # Set working directory
 WORKDIR /app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 6000
 
 # Run FastAPI app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "4003"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "6000"]

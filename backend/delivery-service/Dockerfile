@@ -1,5 +1,5 @@
 # Stage 1: Build the Go application
-FROM golang:1.21-alpine AS builder
+FROM golang 
 
 # Set working directory
 WORKDIR /app
@@ -15,8 +15,6 @@ COPY . .
 # CGO_ENABLED=0 GOOS=linux
 RUN go build -o main .
 
-# Stage 2: Create a minimal runtime image
-FROM alpine:3.18 AS runtime
 
 # Expose the port your app listens on
 EXPOSE 4000
