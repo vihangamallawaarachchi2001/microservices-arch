@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from typing import Dict
+from typing import Dict,List
 
 app = FastAPI()
 
