@@ -5,7 +5,7 @@ metadata:
   name: notification-service
   namespace: microservices-arch
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: notification-service
@@ -19,12 +19,6 @@ spec:
         image:  vihanm0120/microservices-arch-notification-service:latest
         ports:
         - containerPort: 6000
-        env:
-        - name: MONGO_URI
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-secret
-              key: uri
         resources:
           requests:
             memory: "256Mi"

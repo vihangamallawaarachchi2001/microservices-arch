@@ -5,7 +5,7 @@ metadata:
   name: user-service
   namespace: microservices-arch
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: user-service
@@ -19,12 +19,6 @@ spec:
         image:  vihanm0120/microservices-arch-user-service:latest
         ports:
         - containerPort: 3000
-        env:
-        - name: DB_URL
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-secret
-              key: uri
         resources:
           requests:
             memory: "256Mi"

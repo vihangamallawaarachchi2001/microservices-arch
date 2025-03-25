@@ -5,7 +5,7 @@ metadata:
   name: order-service
   namespace: microservices-arch
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: order-service
@@ -19,12 +19,6 @@ spec:
         image:  vihanm0120/microservices-arch-order-service:latest
         ports:
         - containerPort: 8080
-        env:
-        - name: SPRING_DATA_MONGODB_URI
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-secret
-              key: uri
         resources:
           requests:
             memory: "512Mi"

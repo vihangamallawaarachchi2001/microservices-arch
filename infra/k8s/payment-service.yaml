@@ -5,7 +5,7 @@ metadata:
   name: payment-service
   namespace: microservices-arch
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: payment-service
@@ -19,12 +19,6 @@ spec:
         image:  vihanm0120/microservices-arch-payment-service:latest
         ports:
         - containerPort: 4000
-        env:
-        - name: MONGO_URI
-          valueFrom:
-            secretKeyRef:
-              name: mongodb-secret
-              key: uri
         resources:
           requests:
             memory: "256Mi"
