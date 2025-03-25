@@ -1,0 +1,53 @@
+# search-service.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-service
+  namespace: microservices-arch
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: search-service
+  template:
+    metadata:
+      labels:
+        app: search-service
+    spec:
+      containers:
+      - name: search-service
+        image:  vihanm0120/microservices-arch-search-service:latest
+        ports:
+        - containerPort: 6000
+        env:
+        - name: ELASTICSEARCH_HOST
+          value: "elasticsearch.microservices-arch.svc.cluster.local"
+        - name: ELASTICSEARCH_PORT
+          value: "9200"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "800m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 6000
+          initialDelaySeconds: 20
+          periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-service
+  namespace: microservices-arch
+spec:
+  selector:
+    app: search-service
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 6000
+  type: ClusterIP
