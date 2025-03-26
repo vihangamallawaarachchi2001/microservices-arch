@@ -19,11 +19,13 @@ export const register = async (username: string, email: string, password: string
   }
 };
 
-export const login = async (email: string, password: string): Promise<UserServiceResponse> => {
+export const login = async (emailOrUsername: string, password: string): Promise<UserServiceResponse> => {
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      $or: [{ email: emailOrUsername}, { username: emailOrUsername}]
+    });
     
-    if (!user) return { success: false, error: 'Invalid credentials' };
+    if (!user) return { success: false, error: 'User not found' };
     
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return { success: false, error: 'Invalid credentials' };
