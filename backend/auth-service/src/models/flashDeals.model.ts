@@ -8,7 +8,7 @@ export interface IUser extends Document {
 }
 
 const FlashDealsSchema: Schema = new Schema({
-  foodID: { type: String, required: true, unique: true},
+  foodID: { type: String, required: true},
   type: { type: String, required: true },
   newPrice: { type: String, required: true },
 }, { timestamps: true });
