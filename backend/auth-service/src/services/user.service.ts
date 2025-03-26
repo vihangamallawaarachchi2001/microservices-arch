@@ -9,10 +9,10 @@ export interface UserServiceResponse {
 }
 
 
-export const register = async (username: string, email: string, password: string): Promise<UserServiceResponse> => {
+export const register = async (username: string, email: string, password: string,address :[string],phoneNo: string,isActive:boolean,alergy:[string],avatar:string): Promise<UserServiceResponse> => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, password: hashedPassword });
+    const user = await User.create({ username, email, password: hashedPassword,address,phoneNo,isActive,alergy,avatar });
     return { success: true, data: user };
   } catch (error: any) {
     return { success: false, error: error.message };

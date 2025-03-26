@@ -9,8 +9,8 @@ import {
 
 
 export const registerController = async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
-  const result = await register(username, email, password);
+  const { username, email, password,address,phoneNo,isActive,alergy,avatar} = req.body;
+  const result = await register(username, email, password,address,phoneNo,isActive,alergy,avatar);
   result.success 
     ? res.status(201).json(result.data)
     : res.status(400).json({ error: result.error });
