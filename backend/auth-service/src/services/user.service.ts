@@ -9,21 +9,23 @@ export interface UserServiceResponse {
 }
 
 
-export const register = async (username: string, email: string, password: string): Promise<UserServiceResponse> => {
+export const register = async (username: string, email: string, password: string,address :[string],phoneNo: string,isActive:boolean,alergy:[string],avatar:string): Promise<UserServiceResponse> => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, password: hashedPassword });
+    const user = await User.create({ username, email, password: hashedPassword,address,phoneNo,isActive,alergy,avatar });
     return { success: true, data: user };
   } catch (error: any) {
     return { success: false, error: error.message };
   }
 };
 
-export const login = async (email: string, password: string): Promise<UserServiceResponse> => {
+export const login = async (emailOrUsername: string, password: string): Promise<UserServiceResponse> => {
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+      $or: [{ email: emailOrUsername}, { username: emailOrUsername}]
+    });
     
-    if (!user) return { success: false, error: 'Invalid credentials' };
+    if (!user) return { success: false, error: 'User not found' };
     
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return { success: false, error: 'Invalid credentials' };
