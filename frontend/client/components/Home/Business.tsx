@@ -5,9 +5,9 @@ import { ArrowRight } from "lucide-react";
 
 const Business = () => {
   return (
-    <section className="container py-16 md:py-24">
+    <section className="container py-16 md:py-24 max-w-[1366px] mx-auto px-2 md:px-0">
       <div className="flex flex-col gap-6 text-center">
-        <h2 className="text-4xl font-bold tracking-tight text-gray-800">
+        <h2 className="text-4xl font-bold tracking-tight text-orange-500">
           Expand Your Business with QuickBite
         </h2>
         <p className="text-muted-foreground mx-auto max-w-2xl">

@@ -6,7 +6,7 @@ import { Apple, Smartphone } from "lucide-react";
 const AppDown = () => {
   return (
     <section className="relative bg-gradient-to-br from-primary via-primary/80 to-primary/60 text-primary-foreground py-8 md:py-16 lg:py-20 overflow-hidden">
-      <div className="container relative z-10 pl-5">
+      <div className="container relative z-10 pl-5 max-w-[1366px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left Column: Content */}
           <div className="flex flex-col gap-6">
@@ -35,10 +35,10 @@ const AppDown = () => {
             </div>
 
             {/* QR Codes */}
-            <div className="flex flex-col md:flex-row gap-6 mt-4">
-              <div className="flex flex-col items-center gap-2 group">
+            <div className="flex flex-row gap-10 mt-4">
+              <div className="flex flex-col items-start gap-2 group">
                 <h4 className="text-base md:text-lg font-medium text-white group-hover:text-primary-foreground transition-colors">
-                  QuickBite
+                  QuickBite mobile <br /> app
                 </h4>
                 <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-lg overflow-hidden shadow-md group-hover:shadow-lg transition-all">
                   <Image
@@ -51,9 +51,9 @@ const AppDown = () => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col items-center gap-2 group">
+              <div className="flex flex-col items-start gap-2 group">
                 <h4 className="text-base md:text-lg font-medium text-white group-hover:text-primary-foreground transition-colors">
-                  QuickBite Business Studio
+                  QuickBite Business <br /> Studio
                 </h4>
                 <div className="relative w-24 h-24 md:w-28 md:h-28 rounded-lg overflow-hidden shadow-md group-hover:shadow-lg transition-all">
                   <Image

@@ -4,9 +4,9 @@ import { Image } from "react-native";
 const PopularCategory = () => {
   return (
     <section className="bg-muted py-16">
-      <div className="container">
+      <div className="container max-w-[1366px] mx-auto px-2 md:px-0">
         <div className="flex flex-col gap-2 mb-10 text-center">
-          <h2 className="text-4xl font-bold tracking-tight text-gray-800">
+          <h2 className="text-4xl font-bold tracking-tight text-orange-500">
             Popular Categories
           </h2>
           <p className="text-muted-foreground mx-auto max-w-md">
