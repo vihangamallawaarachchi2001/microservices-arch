@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface IUser extends Document {
+export interface IHotel extends Document {
   userID: string;
   hotelName: string;
   hotelAddress:string;
@@ -30,5 +30,5 @@ const HotelSchema: Schema = new Schema({
     rating: { type: Number, default: 0 }, // Assuming this is the rating
   }, { timestamps: true });
 
-const Hotel = mongoose.model<IUser>("Hotel", HotelSchema);
+const Hotel = mongoose.model<IHotel>("Hotel", HotelSchema);
 export default Hotel;
