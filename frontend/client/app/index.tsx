@@ -36,7 +36,7 @@ const HeroImage = require("../assets/images/hero.png");
 export default function Index() {
   return (
     <div className="overflow-scroll bg-white">
-      <div className="flex min-h-screen flex-col mx-auto max-w-[1366px] w-full ">
+      <div className="flex min-h-screen flex-col mx-auto  w-full ">
         <Navbar />
         <main>
           <Hero />
