@@ -8,39 +8,6 @@ export interface UserServiceResponse {
   error?: string;
 }
 
-
-export const register = async (username: string, email: string, password: string): Promise<UserServiceResponse> => {
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, password: hashedPassword });
-    return { success: true, data: user };
-  } catch (error: any) {
-    return { success: false, error: error.message };
-  }
-};
-
-export const login = async (email: string, password: string): Promise<UserServiceResponse> => {
-  try {
-    const user = await User.findOne({ email });
-    
-    if (!user) return { success: false, error: 'Invalid credentials' };
-    
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return { success: false, error: 'Invalid credentials' };
-    
-    const token = jwt.sign(
-      { id: user._id }, 
-      process.env.JWT_SECRET!,
-      { expiresIn: '1h' }
-    );
-    
-    return { success: true, data: { user, token } };
-  } catch (error: any) {
-    return { success: false, error: error.message };
-  }
-};
-
-
 export const getAllUsers = async (): Promise<UserServiceResponse> => {
   try {
     const users = await User.find();
