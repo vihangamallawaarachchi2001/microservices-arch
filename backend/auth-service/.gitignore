@@ -47,5 +47,5 @@ test-results/
 *.db
 
 # TypeScript
-*.tsbuildinfo
-dist/
+# *.tsbuildinfo
+# dist/
