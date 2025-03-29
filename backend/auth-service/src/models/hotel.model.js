@@ -1,22 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface IHotel extends Document {
-  userID: string;
-  hotelName: string;
-  hotelAddress:string;
-  MetaData: Record<string, any>;
-  banner:string;
-  isAuthorized:boolean;
-  authCertificates:Record<string, any>;
-  ordersCount:number;
-  location:string;
-  opentime:TimeRanges;
-  rating:number;
-}
-
-
 // Schema for the Hotel
-const HotelSchema: Schema = new Schema({
+const HotelSchema = new Schema({
     userID: { type: String, required: true }, // Added userID
     hotelName: { type: String, required: true },
     hotelAddress: { type: String, required: true },
