@@ -2,6 +2,9 @@ const Hotel = require("../models/resturant.model");
 
 const userID = "123456";
 
+
+//TODO : Multer setup 
+
 // Create a new hotel
 exports.createHotel = async (req, res) => {
   try {
