@@ -1,17 +1,17 @@
 import express from 'express';
-import { getAllUsersController,getUserByIdController,loginController,registerController,deleteUserController,updateUserController} from '../controllers/user.controller'
+import { getAllUsersController,getUserByIdController,deleteUserController,updateUserController} from '../controllers/user.controller'
 import authMiddleware from '../middleware/auth.middleware';
 
-const router = express.Router();
+const router = express.Router(); 
 
-
-  router.post('/register', registerController);
-  router.post('/login', loginController);
-  
-
-router.get('/users', authMiddleware, getAllUsersController);
-router.get('/users/:id', authMiddleware, getUserByIdController);
-router.put('/users/:id', authMiddleware, updateUserController);
-router.delete('/users/:id', authMiddleware, deleteUserController);
+/* Removed 
+ * authMiddleware
+ * for
+ * backend test
+*/
+router.get('/users', getAllUsersController);  // router.get('/users', authMiddleware , getAllUsersController);
+router.get('/users/:id', getUserByIdController);  // router.get('/users/:id', authMiddleware , getUserByIdController);
+router.put('/users/:id', updateUserController);  // router.put('/users/:id', authMiddleware , updateUserController);
+router.delete('/users/:id', deleteUserController);  // router.delete('/users/:id', authMiddleware , deleteUserController);
 
 export default router;
