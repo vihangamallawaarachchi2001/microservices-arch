@@ -2,10 +2,10 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <section className="container py-8 md:py-16 lg:py-16">
+    <section className="container py-8 md:py-16 lg:py-16 max-w-[1366px] mx-auto">
       <div className="flex flex-col gap-4 mb-8 text-center">
         
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-primary">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-orange-500">
           How It Works
         </h2>
        

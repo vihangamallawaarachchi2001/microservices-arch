@@ -1,0 +1,6 @@
+# Ignore node_modules, logs, and environment files
+node_modules/
+logs/
+.env
+.git
+pnpm-lock.yaml

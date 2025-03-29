@@ -5,9 +5,9 @@ import React from "react";
 const Footer = () => {
   return (
     <footer className="border-t bg-muted">
-      <div className="container py-12">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
-          <div>
+      <div className="container py-12 max-w-[1366px] mx-auto">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 mx-auto">
+          <div className="text-center flex flex-col items-center">
             <div className="flex items-center gap-2 mb-4">
               <Utensils className="h-5 w-5 text-primary" />
               <span className="text-lg font-bold">QuickBite</span>
@@ -41,7 +41,7 @@ const Footer = () => {
               ))}
             </div>
           </div>
-          <div>
+          <div className="text-center flex flex-col items-center">
             <h4 className="font-bold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm">
               {["Home", "About Us", "Restaurants", "Pricing", "Contact"].map(
@@ -58,7 +58,7 @@ const Footer = () => {
               )}
             </ul>
           </div>
-          <div>
+          <div className="text-center flex flex-col items-center">
             <h4 className="font-bold mb-4">Legal</h4>
             <ul className="space-y-2 text-sm">
               {[
@@ -78,7 +78,7 @@ const Footer = () => {
               ))}
             </ul>
           </div>
-          <div>
+          <div className="text-center flex flex-col items-center">
             <h4 className="font-bold mb-4">Contact Us</h4>
             <address className="not-italic text-sm text-muted-foreground space-y-2">
               <p>123 Delivery Street</p>
