@@ -1,20 +1,19 @@
-# ./
+# auth-service
 
 [![Node.js Version](https://img.shields.io/badge/Node.js-18.x-green)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
 ## Description
-./ is a modern backend API built with:
-- **Express.js** and TypeScript
+auth-service is a modern backend API built with:
+- **Express.js** 
 - **MongoDB** database integration
 - JWT Authentication
-- Winston/Morgan logging
+- Basic error handling
 
 ## Features
 - RESTful API endpoints
 - Database integration
 - JWT Authentication
-- Structured logging
 - Environment variables
 - Security headers (Helmet)
 - CORS handling
@@ -31,7 +30,7 @@
 ### Installation
 ```bash
 # Navigate to project directory
-cd ./
+cd auth-service
 
 # Install dependencies
 pnpm install (already installed on setup)
@@ -51,7 +50,7 @@ JWT_SECRET=your-secret-key
 # Start development server
 pnpm run dev
 
-# Production build (TypeScript projects)
+# Production build 
 pnpm build
 ```
 
@@ -88,12 +87,11 @@ src/
 ├── routes/        # API routes
 ├── services/      # Business logic
 ├── utils/         # Logger utilities
-└── server.ts  # Entry point
+└── server.js  # Entry point
 ```
 
 ## Technologies
 - Express.js
-- TypeScript
 
 - Mongoose
 
