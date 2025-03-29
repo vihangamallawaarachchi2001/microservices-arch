@@ -2,6 +2,9 @@ const Food = require("../models/foodItems.model");
 
 const hotelID = "2345567777654"
 
+//TODO : Multer setup
+
+
 // Create a new food item
 exports.createFood = async (req, res) => {
   try {
