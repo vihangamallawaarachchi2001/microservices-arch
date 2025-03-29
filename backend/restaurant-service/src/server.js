@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
 const dbConnection = require("./config/dbConfig");
-const resturantRoutes = require("./routes/resturant.routes")
+const resturantRoutes = require("./routes/resturant.routes");
+const foodItemsRoutes = require("./routes/foodItems.route");
 
 dotenv.config();
 
@@ -26,7 +27,8 @@ app.use(cookieParser());
 })();
 
 // Routes setup
-app.use('/api/hotel',resturantRoutes)
+app.use('/api/hotel',resturantRoutes);
+app.use('/api/foods',foodItemsRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
