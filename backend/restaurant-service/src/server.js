@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const dbConnection = require("./config/dbConfig");
 const resturantRoutes = require("./routes/resturant.routes");
 const foodItemsRoutes = require("./routes/foodItems.route");
+const flashDealsRoutes = require("./routes/flashDeals.route");
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 // Routes setup
 app.use('/api/hotel',resturantRoutes);
 app.use('/api/foods',foodItemsRoutes);
+app.use('/api/flashDeals',flashDealsRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -51,3 +53,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+//TODO:Search, pagination
