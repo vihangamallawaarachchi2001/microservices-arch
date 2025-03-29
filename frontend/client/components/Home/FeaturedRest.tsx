@@ -7,11 +7,11 @@ import { Link } from "expo-router";
 const FeaturedRest = () => {
   return (
     <section className="bg-muted py-8 md:py-16 lg:py-20">
-      <div className="container">
+      <div className="container max-w-[1366px] mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 md:mb-8 lg:mb-10">
           <div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-primary">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-orange-500">
               Featured Restaurants
             </h2>
             <p className="text-muted-foreground text-sm md:text-base lg:text-lg">
@@ -28,7 +28,7 @@ const FeaturedRest = () => {
         </div>
 
         {/* Restaurant Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 px-2 md:px-0">
           {[
             {
               name: "Burger Palace",
