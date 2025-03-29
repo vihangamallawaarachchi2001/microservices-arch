@@ -91,7 +91,7 @@ services:
   review-service:
     build: ./backend/review-service
     ports:
-      - "8083:8080"
+      - "3009:3000"
     environment:
       - MONGO_URI=mongodb+srv://sksv:sksvD@cluster0.zychm.mongodb.net/userDB?retryWrites=true&w=majority&appName=Cluster0
     networks:
