@@ -45,6 +45,9 @@ module.exports = {
         md: `calc(var(--radius) - 2px)`,
         sm: 'calc(var(--radius) - 4px)',
       },
+      backgroundImage: {
+        'signup': "url('./assets/images/foods.jpg')" 
+      }
     },
   },
   plugins: [],

@@ -8,25 +8,24 @@ import {
   extendSessionController,
   logoutController,
   signOutController,
-  validateSessionController,
   forgotPasswordController,
   reactivateAccountController,
+  resetPasswordController,
 } from '../controllers/user.controller.js';
 
 const router = express.Router();
 
 // Public Routes
-router.post('/register', registerController);
+router.post('/sign-up', registerController);
 router.post('/activate-account', activateAccountController);
 router.post('/login', loginController);
 router.post('/resend-otp', resendOTPController);
 router.post('/forgot-password', forgotPasswordController);
 router.post('/reactivate-account', reactivateAccountController);
+router.post('/reset-password', resetPasswordController);
 
 // Protected Routes (Require authGuard)
-router.post('/extend-session', authGuard, extendSessionController);
 router.post('/logout', authGuard, logoutController);
 router.post('/sign-out', authGuard, signOutController);
-router.get('/validate-session/:sessionId', authGuard, validateSessionController);
 
 export default router;

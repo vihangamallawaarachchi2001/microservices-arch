@@ -12,7 +12,12 @@ dotenv.config();
 const app = express();
 
 // Middleware setup
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:8081',
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+
+}));
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
@@ -23,7 +28,7 @@ app.use(cookieParser());
 })();
 
 // Routes setup
-app.use('/api', userRoutes);
+app.use('/api/auth', userRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
