@@ -9,8 +9,8 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: process.env.SMTP_LOGIN as string, // Email used for sending emails
-        pass: process.env.SMTP_KEY as string, // SMTP password for the email
+        user: process.env.SMTP_LOGIN, // Email used for sending emails
+        pass: process.env.SMTP_KEY, // SMTP password for the email
     },
     tls: {
         rejectUnauthorized: false, // Allow insecure connections (useful for testing or development)
@@ -24,7 +24,7 @@ const transporter = nodemailer.createTransport({
  * @param html - The HTML body content of the email.
  * @returns Success message if email is sent, or throws an error if failed.
  */
-export const sendEmail = async (to: string, subject: string, html: string): Promise<{ success: boolean; message: string }> => {
+export const sendEmail = async (to, subject, html) => {
     try {
         const mailOptions = {
             from: `"PFT" <${process.env.SMTP_LOGIN}>`,
@@ -47,7 +47,7 @@ export const sendEmail = async (to: string, subject: string, html: string): Prom
  * @param verificationLink - The verification URL to be included in the email.
  * @returns The HTML content for the verification email.
  */
-export const getVerifyAccountEmail = (verificationLink: string): string => `
+export const getVerifyAccountEmail = (verificationLink) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,7 +73,7 @@ export const getVerifyAccountEmail = (verificationLink: string): string => `
  * @param otpCode - The OTP code to be included in the email.
  * @returns The HTML content for the OTP email.
  */
-export const getOtpEmail = (otpCode: string): string => `
+export const getOtpEmail = (otpCode) => `
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,7 +100,7 @@ export const getOtpEmail = (otpCode: string): string => `
  * @param link - The password reset link to be included in the email.
  * @returns The HTML content for the password reset email.
  */
-export const getLinkEmail = (link: string): string => `
+export const getLinkEmail = (link) => `
 <!DOCTYPE html>
 <html>
 <head>
