@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import logger from "./utils/logger";
 import dbConnection from "./config/dbConfig";
 import userRoutes from './routes/user.routes';
+import adminRoutes from './routes/admin.route'
+import driverRoutes from './routes/driver.route';
 import authMiddleware from "./middleware/auth.middleware";
 
 dotenv.config();
@@ -32,6 +34,8 @@ app.use(morganMiddleware);
 
 // Routes setup
 app.use('/api', userRoutes);
+app.use('/api', adminRoutes);
+app.use('/api', driverRoutes);
 
 // Health check endpoint
 app.get('/health', (req: Request, res: Response) => {
