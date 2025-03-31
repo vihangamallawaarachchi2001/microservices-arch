@@ -1,18 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface IDriver extends Document {
-  username: string;
-  email: string;
-  password: string;
-  phoneNo:string;
-  nic:string;
-  licen:string;
-  isAuthorized:boolean;
-  avatar:string;
-  authCertificates:Record<string, any>;
-}
 
-const DriverSchema: Schema = new Schema({
+const DriverSchema = new Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -24,5 +13,5 @@ const DriverSchema: Schema = new Schema({
   authCertificates:{ type: Object, default:{} },
 }, { timestamps: true });
 
-const Driver = mongoose.model<IDriver>("Driver", DriverSchema);
+const Driver = mongoose.model("Driver", DriverSchema);
 export default Driver;

@@ -1,50 +1,43 @@
-import User from '../models/User';
-import Admin from '../models/Admin';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import Admin from '../models/Admin.js';
 
-export interface UserServiceResponse {
-  success: boolean;
-  data?: any;
-  error?: string;
-}
 
-export const getAllAdmins = async (): Promise<UserServiceResponse> => {
+export const getAllAdmins = async () => {
     try {
       const admins = await Admin.find();
       return { success: true, data: admins };
-    } catch (error: any) {
+    } catch (error) {
       return { success: false, error: error.message };
     }
   };
 
-export const getAdminById = async (id: string): Promise<UserServiceResponse> => {
+export const getAdminById = async (id) => {
   try {
     const admins = await Admin.findById(id);
     return admins 
       ? { success: true, data: admins } 
       : { success: false, error: 'User not found' };
-  } catch (error: any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const updateAdmin = async (id: string, data: any): Promise<UserServiceResponse> => {
+export const updateAdmin = async (id, data) => {
   try {
     const admins = await Admin.findByIdAndUpdate(id, data, { new: true });
     return admins 
       ? { success: true, data: admins } 
       : { success: false, error: 'Update failed' };
-  } catch (error: any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const deleteAdmin = async (id: string): Promise<UserServiceResponse> => {
+export const deleteAdmin = async (id) => {
   try {
     await Admin.findByIdAndDelete(id);
     return { success: true };
-  } catch (error:any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };

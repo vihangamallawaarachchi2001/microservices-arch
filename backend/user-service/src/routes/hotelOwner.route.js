@@ -1,6 +1,6 @@
 import express from 'express';
-import { getAllHotelOwnerController,getHotelOwnerByIdController,deleteHotelOwnerController,updateHotelOwnerController} from '../controllers/hotelOwner.controller'
-import authMiddleware from '../middleware/auth.middleware';
+import { getAllHotelOwnerController,getHotelOwnerByIdController,deleteHotelOwnerController,updateHotelOwnerController} from '../controllers/hotelOwner.controller.js'
+
 
 const router = express.Router(); 
 

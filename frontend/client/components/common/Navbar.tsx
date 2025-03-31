@@ -118,10 +118,10 @@ const Navbar = () => {
         {/* Actions Section (Desktop Only) */}
         {isLoggedIn  ? (
           <div className="hidden md:flex justify-center items-center gap-5">
-            <Link href="/">
+            <Link href="/user/profile">
               <User className="h-6 w-6 text-gray-600 hover:text-primary" />
             </Link>
-            <Link href="/">
+            <Link href="/user/cart">
               <ShoppingCart className="h-6 w-6 text-gray-600 hover:text-primary" />
             </Link>
             <Link href="/">
