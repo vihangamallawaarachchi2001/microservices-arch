@@ -92,6 +92,26 @@ export const resetPassword = async (email: string, otp: string, password: string
   return api.post("/auth/reset-password", { email, otp, password });
 };
 
+export const updateProfile = async (formData: any) => {
+  return api.put("/users/",formData);
+};
+
+export const deleteProfile = async () => {
+  return api.delete("/users/");
+};
+
+export const getUserDetails = async () => {
+  return api.get(`/users`);
+};
+
+export const getOrders = async () => {
+  return api.get(`/orders`,);
+};
+
+export const addReview = async (data: any) => {
+  return api.get(`/orders`,);
+};
+
 export const validateSession = async () => {
   try {
     const res = await api.get("/auth/validate-session");

@@ -1,49 +1,42 @@
-import User from '../models/User';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
-export interface UserServiceResponse {
-  success: boolean;
-  data?: any;
-  error?: string;
-}
 
-export const getAllUsers = async (): Promise<UserServiceResponse> => {
+export const getAllUsers = async () => {
   try {
     const users = await User.find();
     return { success: true, data: users };
-  } catch (error: any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const getUserById = async (id: string): Promise<UserServiceResponse> => {
+export const getUserById = async (id) => {
   try {
     const user = await User.findById(id);
     return user 
       ? { success: true, data: user } 
       : { success: false, error: 'User not found' };
-  } catch (error: any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const updateUser = async (id: string, data: any): Promise<UserServiceResponse> => {
+export const updateUser = async (id, data) => {
   try {
     const user = await User.findByIdAndUpdate(id, data, { new: true });
     return user 
       ? { success: true, data: user } 
       : { success: false, error: 'Update failed' };
-  } catch (error: any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };
 
-export const deleteUser = async (id: string): Promise<UserServiceResponse> => {
+export const deleteUser = async (id) => {
   try {
     await User.findByIdAndDelete(id);
     return { success: true };
-  } catch (error:any) {
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };

@@ -1,6 +1,6 @@
 import express from 'express';
-import { getAllDriversController,getDriverByIdController,deleteDriverController,updateDriverController} from '../controllers/driver.controller'
-import authMiddleware from '../middleware/auth.middleware';
+import { getAllDriversController,getDriverByIdController,deleteDriverController,updateDriverController} from '../controllers/driver.controller.js'
+
 
 const router = express.Router(); 
 
