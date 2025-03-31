@@ -9,7 +9,7 @@ const CookieManager =
 
 export const api = axios.create({
   baseURL:
-    Platform.OS === "ios" || Platform.OS === "android"
+    Platform.OS !== "ios" || Platform.OS !== "android"
       ? "http://192.168.8.115:3000/api"
       : "http://localhost:3000/api",
   withCredentials: true,

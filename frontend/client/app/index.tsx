@@ -33,6 +33,7 @@ import NewsLetter from "@/components/Home/NewsLetter";
 import Footer from "@/components/common/Footer";
 import { ENV } from "@/utils/constants";
 import { useEffect, useState } from "react";
+import '../global.css'
 
 const HeroImage = require("../assets/images/hero.png");
 
