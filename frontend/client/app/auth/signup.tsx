@@ -11,6 +11,7 @@ const bg = require("../../assets/images/signup-bg.png");
 import { Image } from "react-native";
 import { Button } from "@/components/ui/button";
 import { register } from "@/lib/api";
+import '../../global.css'
 
 const Signup = () => {
   const router = useRouter();

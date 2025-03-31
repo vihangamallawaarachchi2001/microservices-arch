@@ -7,6 +7,7 @@ import { Image } from "react-native";
 import { Button } from "@/components/ui/button";
 import { activateAccount, resendOTP, resetPassword } from "@/lib/api";
 import { useLocalSearchParams } from "expo-router";
+import '../../global.css'
 
 const OTPValidation = () => {
   const router = useRouter();

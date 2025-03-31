@@ -102,7 +102,7 @@ const Navbar = () => {
               
               <div className="mt-4 flex flex-col space-y-2 md:hidden">
               <Link
-                href="/"
+                href="/_sitemap"
                 className="block w-full rounded-md bg-gray-100 px-4 py-2 text-center text-sm font-medium text-gray-600 hover:bg-gray-200"
               >
                 Sign In
