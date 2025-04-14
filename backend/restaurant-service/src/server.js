@@ -14,7 +14,11 @@ dotenv.config();
 const app = express();
 
 // Middleware setup
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+}));
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
@@ -29,8 +33,8 @@ app.use(cookieParser());
 
 // Routes setup
 app.use('/api/hotel',resturantRoutes);
-app.use('/api/foods',foodItemsRoutes);
-app.use('/api/flashDeals',flashDealsRoutes);
+app.use('/api/hotel/foods',foodItemsRoutes);
+app.use('/api/hotel/flashDeals',flashDealsRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

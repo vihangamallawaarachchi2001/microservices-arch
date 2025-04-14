@@ -42,13 +42,21 @@ export const loginController = async (req, res) => {
   try {
     const { emailOrUsername, password } = req.body;
     const { success, token, session, message } = await login(emailOrUsername, password, req);
-    if (!success) return res.status(400).json({ success, message });
+
+    if (message === 'Session already active on this device') {
+      return res.status(200).json({ message });
+    }
+
+    if (!success) {
+      return res.status(400).json({ success, message });
+    }
+
     res.cookie("session", session, {
       httpOnly: true,
       secure: true,
-      //sameSite: "Strict",
-      maxAge: 24 * 60 * 60 * 1000, 
-  });
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
     return res.status(200).json({ success: true, token, session });
   } catch (error) {
     console.error(error);
@@ -135,6 +143,47 @@ export const resetPasswordController = async (req, res) => {
     if (!success) return res.status(400).json({ success, message });
  
     return res.status(200).json({ success: true});
+  } catch (error) {
+    console.error(error);
+    return res.status(error.statusCode || 500).json({ success: false, message: error.message });
+  }
+};
+
+export const checkAuthController = async (req, res) => {
+  try {
+    if(req.user) {
+      console.log(req.user)
+      return res.status(200).json({isAuthenticated: true})
+    }
+
+    return res.status(403).json({isAuthenticated: false})
+  } catch (error) {
+    console.error(error);
+    return res.status(error.statusCode || 500).json({ success: false, message: error.message });
+  }
+};
+
+export const refreshTokenController = async (req, res) => {
+  try {
+    const { refreshToken } = req.cookies; 
+
+    if (!refreshToken) {
+      return res.status(401).json({ success: false, message: "No refresh token found." });
+    }
+
+    const { success, token, message } = await refreshTokenHandler(refreshToken);
+
+    if (!success) {
+      return res.status(401).json({ success, message });
+    }
+
+    res.cookie("session", token, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({ success: true, token });
   } catch (error) {
     console.error(error);
     return res.status(error.statusCode || 500).json({ success: false, message: error.message });

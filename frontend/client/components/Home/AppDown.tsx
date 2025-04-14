@@ -86,7 +86,7 @@ const AppDown = () => {
       </div>
 
       {/* Background Decoration */}
-      <div className="absolute inset-0 bg-[url('@/assets/images/hero-categories/decoration.svg')] bg-no-repeat bg-center bg-cover opacity-20"></div>
+      {/* <div className="absolute inset-0 bg-[url('@/assets/images/hero-categories/decoration.svg')] bg-no-repeat bg-center bg-cover opacity-20"></div> */}
     </section>
   );
 };

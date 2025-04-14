@@ -13,7 +13,10 @@ const HotelSchema = new mongoose.Schema(
     ordersCount: { type: Number, default: 0 },
     location: { type: String, required: true },
     opentime: { type: String, required: true }, // Assuming this is a string for hours
-    ratingID: { type: [String], default: [] }, // Assuming this is the rating
+    rating: { type: Number, default: 0 }, // Assuming this is the rating
+    categoriesprovider: {type: [String]},
+    cousinProvided: {type: [String]},
+    isFeatured: {type: Boolean},
   },
   { timestamps: true }
 );

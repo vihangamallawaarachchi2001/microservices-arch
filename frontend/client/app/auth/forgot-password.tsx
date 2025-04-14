@@ -6,6 +6,7 @@ const bg = require("../../assets/images/signup-bg.png");
 import { Image } from "react-native";
 import { Button } from "@/components/ui/button";
 import { forgotPassword } from "@/lib/api";
+import '../../global.css'
 
 const ForgotPasswordPage = () => {
   const router = useRouter();

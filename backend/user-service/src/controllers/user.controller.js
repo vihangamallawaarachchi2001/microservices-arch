@@ -21,6 +21,13 @@ export const getUserByIdController = async (req, res) => {
     ? res.status(200).json(result.data)
     : res.status(404).json({ error: result.error });
 };
+export const getUserByIdPrController = async (req, res) => {
+  const { id } = req.params;
+  const result = await getUserById(id);
+  result.success 
+    ? res.status(200).json(result.data)
+    : res.status(404).json({ error: result.error });
+};
 
 export const updateUserController = async (req, res) => {
   const { userId } = req.user;

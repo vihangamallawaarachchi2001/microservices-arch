@@ -6,7 +6,8 @@ const foodItemController = require("../controllers/foodItems.controller");
 router.post("/", foodItemController.createFood);
 
 // Get a single hotel by ID
-router.get("/getById/:id", foodItemController.getFoodById);
+router.get("/getById/:hotelID", foodItemController.getFoodById);
+router.get("/:id", foodItemController.getFoodBy_ID);
 
 // Get all hotels
 router.get("/getAll", foodItemController.getAllFood);

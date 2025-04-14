@@ -16,7 +16,7 @@ export const register = async (registrationData) => {
       !registrationData.address ||
       !registrationData.email ||
       !registrationData.password ||
-      !registrationData.phoneNo ||
+      !registrationData.phoneNumber ||
       !registrationData.username
     ) {
       throw new ApiError(400, 'Required data fields are missing');
@@ -38,7 +38,7 @@ export const register = async (registrationData) => {
       username: registrationData.username,
       email: registrationData.email,
       address: registrationData.address,
-      phoneNo: registrationData.phoneNo,
+      phoneNo: registrationData.phoneNumber,
       isActive,
       alergy,
       password: hashedPassword,
@@ -99,17 +99,13 @@ export const activateAccount = async (activationData, req) => {
 
 export const login = async (emailOrUsername, password, req) => {
   try {
-    console.log(1);
     const user = await User.findOne({
       $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
     });
-    console.log(1);
     if (!user) return { success: false, message: 'User not found' };
     const isPasswordValid = await verifyPassword(password, user.password);
     if (!isPasswordValid) return { success: false, message: 'Invalid username or password' };
-    console.log(1);
     if (!user.isActive) return { success: false, message: 'Please activate your account before logging in' };
-    console.log(1);
     const existingSession = await Session.findOne({
       userId: user._id,
       deviceInfo: JSON.stringify(userAgent.parse(req.headers['user-agent'])),
@@ -117,7 +113,7 @@ export const login = async (emailOrUsername, password, req) => {
     console.log(1);
     
     if (existingSession && existingSession.expiresIn > Date.now()) {
-      return { success: false, message: 'Session already active on this device' };
+      return { success: true, message: 'Session already active on this device' };
     }
     console.log(1);
     const token = await generateToken({ userId: user._id });

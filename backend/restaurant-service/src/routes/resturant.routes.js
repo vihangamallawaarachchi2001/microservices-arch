@@ -8,19 +8,19 @@ router.post("/", hotelController.createHotel);
 // Get a single hotel by ID
 router.get("/getById/:id", hotelController.getHotel);
 
-// Get all hotels
-router.get("/getAll", hotelController.getAllHotels);
+// Get all hotels (with filtering and search)
+router.get("/", hotelController.getAllHotels);
 
 // Update a hotel by ID
-router.put("update/:id", hotelController.updateHotel);
+router.put("/update/:id", hotelController.updateHotel); // Fixed missing "/"
 
 // Delete a hotel by ID
 router.delete("/:id", hotelController.deleteHotel);
 
-//rate hotel
-router.put("/rate/:id",hotelController.rateHotel)
+// Rate a hotel
+router.put("/rate/:id", hotelController.rateHotel);
 
-//remove rating
-router.put('/removeRate/:id', hotelController.removeRating)
+// Remove a rating from a hotel
+//router.put("/removeRate/:id", hotelController.removeRating);
 
 module.exports = router;
