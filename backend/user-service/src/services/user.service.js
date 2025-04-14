@@ -22,8 +22,10 @@ export const getUserById = async (id) => {
 };
 
 export const updateUser = async (id, data) => {
+  console.log(id, data);
   try {
     const user = await User.findByIdAndUpdate(id, data, { new: true });
+    console.log(user);
     return user 
       ? { success: true, data: user } 
       : { success: false, error: 'Update failed' };

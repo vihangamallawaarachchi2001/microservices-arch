@@ -1,10 +1,10 @@
 const FlashDeals = require("../models/flashDeals.model");
 
-const FoodID = "2124564165"
+//const FoodID = "2124564165"
 
 exports.createFlashDeal = async (req, res) => {
   try {
-    const {  type, newPrice } = req.body;
+    const {  type, newPrice,FoodID } = req.body;
 
     // Check if a flash deal already exists for this FoodID
     const existingDeal = await FlashDeals.findOne({ FoodID });
@@ -15,7 +15,7 @@ exports.createFlashDeal = async (req, res) => {
 
     // Create a new flash deal
     const newDeal = new FlashDeals({
-      FoodID:FoodID,
+      FoodID,
       type,
       newPrice,
     });
@@ -71,11 +71,11 @@ exports.deleteFlashDeal = async (req, res) => {
 exports.getFlashDealById = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const flashDeal = await FlashDeals.findById(id);
+    const FoodID = id.toString();
+    const flashDeal = await FlashDeals.findOne({FoodID: FoodID});
 
     if (!flashDeal) {
-      return res.status(404).json({ message: "Flash deal not found" });
+      return res.status(200).json({ message: "Flash deal not found" });
     }
 
     res.status(200).json(flashDeal);

@@ -1,0 +1,207 @@
+/* Import Tailwind CSS */
+@import "tailwindcss";
+
+/* Define custom theme variables */
+@theme {
+  --color-primary-50: #f5f3ff;
+  --color-primary-100: #ede9fe;
+  --color-primary-200: #ddd6fe;
+  --color-primary-300: #c4b5fd;
+  --color-primary-400: #a78bfa;
+  --color-primary-500: #8b5cf6;
+  --color-primary-600: #7c3aed;
+  --color-primary-700: #6d28d9;
+  --color-primary-800: #5b21b6;
+  --color-primary-900: #4c1d95;
+  --color-primary-950: #2e1065;
+
+  --color-secondary-50: #fff7ed;
+  --color-secondary-100: #ffedd5;
+  --color-secondary-200: #fed7aa;
+  --color-secondary-300: #fdba74;
+  --color-secondary-400: #fb923c;
+  --color-secondary-500: #f97316;
+  --color-secondary-600: #ea580c;
+  --color-secondary-700: #c2410c;
+  --color-secondary-800: #9a3412;
+  --color-secondary-900: #7c2d12;
+  --color-secondary-950: #431407;
+
+  --color-dark-50: #f9fafb;
+  --color-dark-100: #f3f4f6;
+  --color-dark-200: #e5e7eb;
+  --color-dark-300: #d1d5db;
+  --color-dark-400: #9ca3af;
+  --color-dark-500: #6b7280;
+  --color-dark-600: #4b5563;
+  --color-dark-700: #374151;
+  --color-dark-800: #1f2937;
+  --color-dark-900: #111827;
+  --color-dark-950: #030712;
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --font-sans: 'Inter', sans-serif;
+  --radius-lg: 0.75rem;
+  --radius-md: calc(var(--radius-lg) - 2px);
+  --radius-sm: calc(var(--radius-lg) - 4px);
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --shadow-soft: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Apply base styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-gray-50);
+    color: var(--color-dark-800);
+  }
+  .dark body {
+    background-color: var(--color-dark-900);
+    color: var(--color-gray-100);
+  }
+}
+
+/* Define components */
+@layer components {
+  
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  .btn-primary {
+    background-color: var(--color-primary-600);
+    color: white;
+  }
+  .btn-secondary {
+    background-color: var(--color-secondary-500);
+    color: white;
+  }
+  .btn-outline {
+    border: 1px solid var(--color-gray-300);
+    background: transparent;
+  }
+  .btn-ghost {
+    background: transparent;
+  }
+  .card {
+    background: var(--color-card);
+    color: var(--color-card-foreground);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+  }
+  .input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  /* Food Category Pill */
+  .category-pill {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    background-color: var(--color-gray-100);
+    transition: background-color 0.3s ease-in-out;
+  }
+  /* Restaurant Card */
+  .restaurant-card {
+    @apply overflow-hidden rounded-2xl bg-white shadow-soft hover:shadow-lg transition-all duration-300 border border-gray-100 dark:bg-dark-800 dark:border-dark-700 dark:hover:border-dark-600;
+  }
+
+  /* Food Item Card */
+  .food-item-card {
+    @apply flex items-center gap-4 p-4 rounded-xl bg-white shadow-soft hover:shadow-md transition-all duration-300 border border-gray-100 dark:bg-dark-800 dark:border-dark-700 dark:hover:border-dark-600;
+  }
+
+  /* Testimonial Card */
+  .testimonial-card {
+    @apply p-6 rounded-2xl bg-white shadow-soft border border-gray-100 dark:bg-dark-800 dark:border-dark-700;
+  }
+
+  /* Feature Card */
+  .feature-card {
+    @apply p-6 rounded-2xl bg-white shadow-soft border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 dark:bg-dark-800 dark:border-dark-700 dark:hover:border-dark-600;
+  }
+
+  /* Glass Card Effect */
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-soft dark:bg-dark-800/80 dark:border-dark-700/50;
+  }
+
+  /* Navbar Blur Effect */
+  .nav-blur {
+    @apply bg-white/70 backdrop-blur-lg border-b border-gray-200/50 dark:bg-dark-900/70 dark:border-dark-800/50;
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-dark-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-dark-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-dark-500;
+  }
+
+  .shadow-soft {
+    @apply shadow-md shadow-gray-200/50 dark:shadow-dark-900/30;
+  }
+}
+
+/* Define utilities */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-in-out;
+  }
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+}

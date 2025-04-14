@@ -11,6 +11,8 @@ import {
   forgotPasswordController,
   reactivateAccountController,
   resetPasswordController,
+  checkAuthController,
+  refreshTokenController,
 } from '../controllers/user.controller.js';
 
 const router = express.Router();
@@ -27,5 +29,7 @@ router.post('/reset-password', resetPasswordController);
 // Protected Routes (Require authGuard)
 router.post('/logout', authGuard, logoutController);
 router.post('/sign-out', authGuard, signOutController);
+router.get('/check-auth', authGuard, checkAuthController);
+router.post('/refresh-token', authGuard, refreshTokenController);
 
 export default router;
