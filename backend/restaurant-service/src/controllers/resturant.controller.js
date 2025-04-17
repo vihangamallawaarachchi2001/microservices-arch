@@ -1,25 +1,47 @@
 const Hotel = require("../models/resturant.model");
 
-const userID = "123456";
+// TODO: Multer setup for file uploads (e.g., banner images)
 
 // Create a new hotel
 exports.createHotel = async (req, res) => {
   try {
+    const {
+      hotelName,
+      hotelAddress,
+      metaData,
+      banner,
+      isAuthorized,
+      authCertificates,
+      ordersCount,
+      location,
+      opentime,
+      categoriesprovider,
+      cousinProvided,
+      isFeatured,
+    } = req.body;
 
-    const {hotelName,hotelAddress,metaData,banner,isAutorized,authCertificates,ordersCount,location,opentime} = req.body;
+    // Validate required fields
+    if (!hotelName || !hotelAddress || !location || !opentime) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
 
-    const newHotel = new Hotel(
-        {userID:userID,
-        hotelName,
-        hotelAddress,
-        metaData,
-        banner,
-        isAutorized,
-        authCertificates,
-        ordersCount,
-        location,
-        opentime}
-    );
+    const newHotel = new Hotel({
+      userID: "123456", // Replace with dynamic user ID if needed
+      hotelName,
+      hotelAddress,
+      metaData,
+      banner: banner || "default_banner_image_url",
+      isAuthorized: isAuthorized || false,
+      authCertificates: authCertificates || {},
+      ordersCount: ordersCount || 0,
+      location,
+      opentime,
+      rating: 0,
+      categoriesprovider: categoriesprovider || [],
+      cousinProvided: cousinProvided || [],
+      isFeatured: isFeatured || false,
+    });
+
     await newHotel.save();
     res.status(201).json(newHotel);
   } catch (error) {
@@ -38,47 +60,103 @@ exports.getHotel = async (req, res) => {
   }
 };
 
-// Get all hotels
+// Get all hotels with filtering and search
+
 exports.getAllHotels = async (req, res) => {
   try {
-    const hotels = await Hotel.find();
+    const { name, address, cuisine, dietary, category, sort, search, location } = req.query;
+
+    const query = {};
+
+    if (search) {
+      query.hotelName = { $regex: search, $options: "i" };
+    }
+
+    if (location) {
+      query.hotelAddress = { $regex: location, $options: "i" };
+    }
+
+    if (name) {
+      query.hotelName = { $regex: name, $options: "i" };
+    }
+
+    if (address) {
+      query.hotelAddress = { $regex: address, $options: "i" };
+    }
+
+    if (cuisine) {
+      query.categoriesprovider = { $in: cuisine.split(",") };
+    }
+
+    if (dietary) {
+      query.cousinProvided = { $in: dietary.split(",") };
+    }
+
+    if (category) {
+      query.categoriesprovider = { $in: category.split(",") };
+    }
+
+    let sortOptions = {};
+    if (sort === "a-z") {
+      sortOptions = { hotelName: 1 };
+    } else if (sort === "z-a") {
+      sortOptions = { hotelName: -1 };
+    }
+
+    const hotels = await Hotel.find(query).sort(sortOptions);
     res.status(200).json(hotels);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+
 // Update an existing hotel
 exports.updateHotel = async (req, res) => {
-    try {
-      const { hotelName, hotelAddress, metaData, banner, isAuthorized, authCertificates, ordersCount, location, opentime } = req.body;
-  
-      const updatedHotel = await Hotel.findByIdAndUpdate(
-        req.params.id,
-        {
-          hotelName,
-          hotelAddress,
-          metaData,
-          banner,
-          isAuthorized,
-          authCertificates,
-          ordersCount,
-          location,
-          opentime,
-        },
-        { new: true }
-      );
-  
-      if (!updatedHotel) {
-        return res.status(404).json({ message: "Hotel not found" });
-      }
-  
-      res.status(200).json(updatedHotel);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const {
+      hotelName,
+      hotelAddress,
+      metaData,
+      banner,
+      isAuthorized,
+      authCertificates,
+      ordersCount,
+      location,
+      opentime,
+      categoriesprovider,
+      cousinProvided,
+      isFeatured,
+    } = req.body;
+
+    const updatedHotel = await Hotel.findByIdAndUpdate(
+      req.params.id,
+      {
+        hotelName,
+        hotelAddress,
+        metaData,
+        banner,
+        isAuthorized,
+        authCertificates,
+        ordersCount,
+        location,
+        opentime,
+        categoriesprovider,
+        cousinProvided,
+        isFeatured,
+      },
+      { new: true }
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel not found" });
     }
-  };
-  
+
+    res.status(200).json(updatedHotel);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Delete a hotel by ID
 exports.deleteHotel = async (req, res) => {
@@ -91,56 +169,28 @@ exports.deleteHotel = async (req, res) => {
   }
 };
 
+// Rate a hotel
 exports.rateHotel = async (req, res) => {
-    try {
-      let { ratingID } = req.body;
-  
-      // Ensure ratingID is an array before pushing
-      if (!Array.isArray(ratingID)) {
-        ratingID = [ratingID]; // Convert single string to an array
-      }
-  
-      const updatedHotel = await Hotel.findByIdAndUpdate(
-        req.params.id,
-        { $push: { ratingID: { $each: ratingID } } }, // Ensure correct array push
-        { new: true }
-      );
-  
-      if (!updatedHotel) {
-        return res.status(404).json({ message: "Hotel not found" });
-      }
-  
-      res.status(200).json(updatedHotel);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+  try {
+    const { rating } = req.body;
 
-  // Remove a rating ID from a hotel
-exports.removeRating = async (req, res) => {
-    try {
-      const { ratingID } = req.body;
-  
-      // Ensure ratingID is provided
-      if (!ratingID) {
-        return res.status(400).json({ message: "ratingID is required" });
-      }
-  
-      // Update the hotel by pulling the ratingID from the array
-      const updatedHotel = await Hotel.findByIdAndUpdate(
-        req.params.id,
-        { $pull: { ratingID: ratingID } },
-        { new: true }
-      );
-  
-      // Check if the hotel was found and updated
-      if (!updatedHotel) {
-        return res.status(404).json({ message: "Hotel not found" });
-      }
-  
-      res.status(200).json(updatedHotel);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    // Validate rating input
+    if (!rating || typeof rating !== "number" || rating < 0 || rating > 5) {
+      return res.status(400).json({ message: "Invalid rating value" });
     }
-  };
-  
+
+    const updatedHotel = await Hotel.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { rating: rating } }, // Increment the rating field
+      { new: true }
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    res.status(200).json(updatedHotel);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

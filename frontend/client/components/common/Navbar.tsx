@@ -1,11 +1,22 @@
 "use dom";
-import { Link } from "expo-router";
-import { Utensils } from "lucide-react";
-import React, { useState } from "react";
+import { Link, useRouter } from "expo-router";
+import { Bell, ShoppingCart, User, Utensils } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-//bg-white/95  backdrop-blur supports-[backdrop-filter]:bg-white/60
+import { getLoggedInStatus } from "@/utils/storage";
+
 const Navbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
+
+  const authCheck = async () => {
+    const status = await getLoggedInStatus();
+    setIsLoggedIn(status)
+  }
+  useEffect(() =>{
+    authCheck()
+  }, [isLoggedIn])
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 shadow-md  backdrop-blur supports-[backdrop-filter]:bg-white/60 ">
@@ -72,9 +83,26 @@ const Navbar = () => {
               About Us
             </Link>
             {/* Sign In and Get Started Buttons */}
-            <div className="mt-4 flex flex-col space-y-2 md:hidden">
+            {isLoggedIn ? (
+              <div className="md:hidden">
+              <Link href="/">
+                <User className="h-6 w-6 text-gray-600 hover:text-primary" />
+                Profile
+              </Link>
+              <Link href="/">
+                <ShoppingCart className="h-6 w-6 text-gray-600 hover:text-primary" />
+                Cart
+              </Link>
+              <Link href="/">
+                <Bell className="h-6 w-6 text-gray-600 hover:text-primary" />
+                Notifications
+              </Link>
+            </div>
+            ) : (
+              
+              <div className="mt-4 flex flex-col space-y-2 md:hidden">
               <Link
-                href="/"
+                href="/_sitemap"
                 className="block w-full rounded-md bg-gray-100 px-4 py-2 text-center text-sm font-medium text-gray-600 hover:bg-gray-200"
               >
                 Sign In
@@ -83,18 +111,43 @@ const Navbar = () => {
                 Get Started
               </Button>
             </div>
+            )}
           </div>
         </nav>
 
         {/* Actions Section (Desktop Only) */}
-        <div className="hidden md:flex items-center gap-4">
-        <Button className="bg-transparent text-primary border border-primary ">
-            Sign In
+        {isLoggedIn  ? (
+          <div className="hidden md:flex justify-center items-center gap-5">
+            <Link href="/user/profile">
+              <User className="h-6 w-6 text-gray-600 hover:text-primary" />
+            </Link>
+            <Link href="/user/cart">
+              <ShoppingCart className="h-6 w-6 text-gray-600 hover:text-primary" />
+            </Link>
+            <Link href="/">
+              <Bell className="h-6 w-6 text-gray-600 hover:text-primary" />
+            </Link>
+          </div>
+        ) : (
+          <div className="hidden md:flex items-center gap-4">
+            <Button
+              className="bg-transparent text-primary border border-primary hover:text-white"
+              onClick={() => {
+                router.push("/auth/login");
+              }}
+            >
+              Sign In
             </Button>
-          <Button className="bg-primary text-white hover:bg-primary-dark">
-            Get Started
-          </Button>
-        </div>
+            <Button
+              className="bg-primary text-white hover:bg-primary-dark hover:border hover:border-black hover:bg-white hover:text-primary"
+              onClick={() => {
+                router.push("/auth/signup");
+              }}
+            >
+              Get Started
+            </Button>
+          </div>
+        )}
       </div>
     </header>
   );
