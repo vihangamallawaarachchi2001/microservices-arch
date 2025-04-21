@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 import dbConnection from './config/dbConfig.js';
-import userRoutes from './routes/user.routes.js';
+import driverRoutes from './routes/driver.routes.js';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware setup
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3003',
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 
@@ -28,7 +28,7 @@ app.use(cookieParser());
 })();
 
 // Routes setup
-app.use('/api/auth', userRoutes);
+app.use('/api/auth', driverRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

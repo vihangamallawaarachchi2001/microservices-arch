@@ -9,23 +9,23 @@ export default function Hero() {
           <div className="lg:w-1/2 space-y-6 animate-fade-in">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight dark: text-white">
               <span className="text-primary-600 dark:text-primary-400">
-                Delicious Food
+                Driver section
               </span>{" "}
-              Delivered To Your Doorstep
+              Not changed yet
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl">
               Order from your favorite restaurants and get your food delivered
               in minutes. Fast, reliable, and delicious!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link href="/restaurants" className="btn btn-primary btn-lg">
-                Order Now
+              <Link href="/signin" className="btn btn-primary btn-lg">
+                Register
               </Link>
               <Link
-                href="/about"
+                href="/signup" 
                 className="btn btn-outline btn-lg dark:text-white"
               >
-                Learn More
+                Sign In
               </Link>
             </div>
             <div className="flex items-center gap-4 pt-4">

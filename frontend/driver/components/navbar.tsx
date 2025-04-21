@@ -193,17 +193,7 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <button
-                  onClick={() => {
-                    router.push("/signin");
-                  }}
-                  className="btn btn-outline dark:text-primary-300"
-                >
-                  Sign in
-                </button>
-                <Link href="/signup" className="btn btn-primary">
-                  Sign up
-                </Link>
+               
               </>
             )}
           </div>
