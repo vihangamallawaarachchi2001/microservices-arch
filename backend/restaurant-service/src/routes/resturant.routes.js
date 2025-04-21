@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const hotelController = require("../controllers/resturant.controller");
+const  authGuard  = require("../middleware/auth.middleware");
 
 // Create a new hotel
-router.post("/", hotelController.createHotel);
+router.post("/",authGuard, hotelController.createHotel);
 
 // Get a single hotel by ID
 router.get("/getById/:id", hotelController.getHotel);

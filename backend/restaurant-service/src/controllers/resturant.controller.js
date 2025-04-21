@@ -1,9 +1,7 @@
 const Hotel = require("../models/resturant.model");
 
-// TODO: Multer setup for file uploads (e.g., banner images)
-
-// Create a new hotel
 exports.createHotel = async (req, res) => {
+  const { userId } = req.user;
   try {
     const {
       hotelName,
@@ -24,9 +22,10 @@ exports.createHotel = async (req, res) => {
     if (!hotelName || !hotelAddress || !location || !opentime) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+    console.log("fuck you bitches");
 
     const newHotel = new Hotel({
-      userID: "123456", // Replace with dynamic user ID if needed
+      userID: userId, // Replace with dynamic user ID if needed
       hotelName,
       hotelAddress,
       metaData,
