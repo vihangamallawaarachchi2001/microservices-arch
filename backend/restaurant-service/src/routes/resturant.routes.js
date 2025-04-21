@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const hotelController = require("../controllers/resturant.controller");
-const  authGuard  = require("../middleware/auth.middleware");
+const authGuard  = require("../middleware/auth.middleware");
 
 // Create a new hotel
 router.post("/",authGuard, hotelController.createHotel);

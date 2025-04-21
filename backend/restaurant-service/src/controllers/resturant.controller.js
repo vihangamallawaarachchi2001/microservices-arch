@@ -22,8 +22,7 @@ exports.createHotel = async (req, res) => {
     if (!hotelName || !hotelAddress || !location || !opentime) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-    console.log("fuck you bitches");
-
+    
     const newHotel = new Hotel({
       userID: userId, // Replace with dynamic user ID if needed
       hotelName,
