@@ -1,6 +1,7 @@
 
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import { clearToken, setToken } from "./store";
+import { getCurrentUserRole } from "./config";
 
 const IS_DEV = process.env.NODE_ENV === "development";
 
@@ -51,7 +52,10 @@ export const restaurantAPI = createApiClient("hotel");
 export const reviewAPI = createApiClient("review");
 
 export const signup = async(formdata:any) => {
-  const response = await authAPI.post('/sign-up', formdata, {withCredentials:true})
+  
+  const role = getCurrentUserRole();
+
+  const response = await authAPI.post(`/${role}/sign-up`, formdata, {withCredentials:true})
   if(response.status === 201) {
       return response.data;
   }
@@ -59,8 +63,10 @@ export const signup = async(formdata:any) => {
 }
 
 export const activateAccount = async (email: string, otp: string): Promise<any> => {
+
+  const role = getCurrentUserRole();
   try {
-    const response = await authAPI.post('/activate-account', { email, otp }, { withCredentials: true });
+    const response = await authAPI.post(`/${role}/activate-account`, { email, otp }, { withCredentials: true });
 
     if (response.status === 200 && response.data.success) {
       setToken( response.data.token);
@@ -74,8 +80,9 @@ export const activateAccount = async (email: string, otp: string): Promise<any> 
 };
 
 export const resendOTP = async (email: string): Promise<any> => {
+  const role = getCurrentUserRole();
   try {
-    const response = await authAPI.post("/resend-otp", { email }, { withCredentials: true });
+    const response = await authAPI.post(`/${role}/resend-otp`, { email }, { withCredentials: true });
     if (response.status === 200 && response.data.success) {
       return { success: true, message: response.data.message };
     }
@@ -93,8 +100,9 @@ export const resendOTP = async (email: string): Promise<any> => {
 };
 
 export const login = async (loginData: { emailOrUsername: string; password: string }) => {
+  const role = getCurrentUserRole();
   try {
-    const response = await authAPI.post("/login", loginData, { withCredentials: true });
+    const response = await authAPI.post(`/${role}/login`, loginData, { withCredentials: true });
 
     if (response.status === 200 && response.data.success) {
       setToken( response.data.token);
@@ -109,8 +117,9 @@ export const login = async (loginData: { emailOrUsername: string; password: stri
 };
 
 export const forgotPassword = async (email: string): Promise<any> => {
+  const role = getCurrentUserRole();
   try {
-    const response = await authAPI.post("/forgot-password", { email }, { withCredentials: true });
+    const response = await authAPI.post(`/${role}/forgot-password`, { email }, { withCredentials: true });
 
     if (response.status === 200 && response.data.success) {
       return response.data;
@@ -132,8 +141,9 @@ export const resetPassword = async ({
   otp: string;
   password: string;
 }) => {
+  const role = getCurrentUserRole();
   try {
-    const response = await authAPI.post("/reset-password", { email, otp, password }, { withCredentials: true });
+    const response = await authAPI.post(`/${role}/reset-password`, { email, otp, password }, { withCredentials: true });
 
     if (response.status === 200 && response.data.success) {
       return response.data;
@@ -147,11 +157,12 @@ export const resetPassword = async ({
 };
 
 export const checkAuth = async (): Promise<boolean> => {
+  const role = getCurrentUserRole();
   try {
     const token = localStorage.getItem("authToken");
     if (!token) return false;
 
-    const response = await authAPI.get("/check-auth", { withCredentials: true });
+    const response = await authAPI.get(`/${role}/check-auth`, { withCredentials: true });
 
     if (response.data.isAuthenticated) {
       return true;
@@ -171,8 +182,9 @@ export const checkAuth = async (): Promise<boolean> => {
 };
 
 export const refreshToken = async (): Promise<string | null> => {
+  const role = getCurrentUserRole();
   try {
-    const response = await authAPI.post("/refresh-token", {}, { withCredentials: true });
+    const response = await authAPI.post(`/${role}/refresh-token`, {}, { withCredentials: true });
     if (response.data.success) {
       return response.data.token;
     }
@@ -184,8 +196,9 @@ export const refreshToken = async (): Promise<string | null> => {
 };
 
 export const logout = async (): Promise<void> => {
+  const role = getCurrentUserRole();
   try {
-    await authAPI.post("/logout", {}, { withCredentials: true });
+    await authAPI.post(`/${role}/logout`, {}, { withCredentials: true });
     clearToken(); 
     window.location.href = "/login"; 
   } catch (error) {
