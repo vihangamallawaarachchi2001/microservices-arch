@@ -18,11 +18,11 @@ export default function Hero() {
               in minutes. Fast, reliable, and delicious!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link href="/signin" className="btn btn-primary btn-lg">
+              <Link href="/signup" className="btn btn-primary btn-lg">
                 Register
               </Link>
               <Link
-                href="/signup" 
+                href="/signin" 
                 className="btn btn-outline btn-lg dark:text-white"
               >
                 Sign In

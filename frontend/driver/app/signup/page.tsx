@@ -197,13 +197,13 @@ export default function SignUpPage() {
                 {renderInput("Username", "username", driverForm.username, "driver")}
                 {renderInput("Email", "email", driverForm.email, "driver", "email")}
                 {renderInput("Phone Number", "phoneNumber", driverForm.phoneNumber, "driver", "tel")}
+                {renderInput("Address", "address", driverForm.address, "driver")}
                 {renderInput("Password", "password", driverForm.password, "driver", passwordVisibility ? "text" : "password")}
                 <div className="flex justify-end">
                   <button type="button" onClick={() => setPasswordVisibility((p) => !p)} className="text-sm text-primary-600">
                     {passwordVisibility ? <EyeOff /> : <Eye />}
                   </button>
                 </div>
-                {renderInput("Address", "address", driverForm.address, "driver")}
               </>
             ) : (
               <>
