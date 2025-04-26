@@ -15,18 +15,15 @@ const authGuard = async (req, res, next) => {
         const token = session.token;
 
         const verification = await verifyToken(token);
-        console.log(verification)
-        if (verification === "Token Expired") {
-            return next(new ApiError(401, "Session expired. Please log in again."));
-        }
+        
 
         if (!session._id) {
             return next(new ApiError(401, "Invalid session. Please log in again."));
         }
-        const sessionAuth = await Session.findById(session._id)
-        if (!sessionAuth) {
-            return next(new ApiError(401, "Session expired. Please log in again."));
-        }
+        //const sessionAuth = await Session.findById(session._id)
+        //if (!sessionAuth) {
+        //    return next(new ApiError(401, "Session expired. Please log in again."));
+        //}
         console.log(verification)
         req.user = verification;
         req.session = session;
