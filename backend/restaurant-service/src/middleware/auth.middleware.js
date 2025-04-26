@@ -1,17 +1,36 @@
-const jwt = require('jsonwebtoken');
+const Session = require("../models/session.model.js");
+const ApiError = require("../utils/ApiError.js");
+const { verifyToken } = require("../utils/jwt.js");
 
-module.exports = function authMiddleware(req, res, next) {
-  const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '');
+/*)*
+ * Middleware to protect routes
+ */
+const authGuard = async (req, res, next) => {
+    try {
+        const session = req.cookies.session;
+        if (!session || !session.token) {
+            return next(new ApiError(401, "Unauthorized: No token provided"));
+        }
 
-  if (!token) {
-    res.status(401).json({ error: 'Access denied. No token provided.' });
-  }
+        const token = session.token;
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (error) {
-    res.status(401).json({ error: 'Invalid or expired token.' });
-  }
+        const verification = await verifyToken(token);
+        
+
+        if (!session._id) {
+            return next(new ApiError(401, "Invalid session. Please log in again."));
+        }
+        //const sessionAuth = await Session.findById(session._id)
+        //if (!sessionAuth) {
+        //    return next(new ApiError(401, "Session expired. Please log in again."));
+        //}
+        console.log(verification)
+        req.user = verification;
+        req.session = session;
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
+
+module.exports = authGuard;
