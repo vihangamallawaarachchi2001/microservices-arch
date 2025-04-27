@@ -260,6 +260,18 @@ export interface Restaurant {
   featured: boolean;
 }
 
+//Create Restaurants Function
+export const createRestaurant = async (data: any) => {
+  try {
+    const response = await restaurantAPI.post(`/`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating restaurants:", error);
+    throw error;
+  }
+};
+
+
 // Fetch Restaurants Function
 export const fetchRestaurants = async (
   filters: {
@@ -310,6 +322,38 @@ export const fetchRestaurantById = async (restaurantId: string) => {
     throw error;
   }
 };
+
+
+//Update Restaurants Function
+export const updateHotel = async (updatedData: any): Promise<any> => {
+  try {
+    const response = await restaurantAPI.put(`/update/${updatedData.id}`, updatedData); 
+    if (response.status === 200) {
+      return response.data;
+    }
+    throw new Error(response.data.message || "Failed to update restaurant.");
+  } catch (error: any) {
+    console.error("Update restaurant Failed:", error);
+    throw error;
+  }
+};
+
+
+//Delete Restaurants Function
+export const deleteHotel = async (id: string): Promise<void> => {
+  try {
+    const response = await restaurantAPI.delete(`/${id}`); 
+    if (response.status === 204) {
+      window.location.href = "/"; 
+    } else {
+      throw new Error(response.data.message || "Failed to delete restaurant.");
+    }
+  } catch (error: any) {
+    console.error("Delete restaurant Failed:", error);
+    throw error;
+  }
+};
+
 
 export const fetchRestaurantReviews = async (restaurantId: string) => {
   try {
