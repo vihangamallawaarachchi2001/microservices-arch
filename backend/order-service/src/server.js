@@ -191,6 +191,83 @@ app.post('/save-order', async (req, res) => {
   }
 });
 
+app.get('/recommendations/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const userOrders = await Order.find({ userId }).lean();
+
+    if (!userOrders || userOrders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for the user.' });
+    }
+    const hotelFrequency = {};
+    const itemFrequency = {};
+
+    userOrders.forEach((order) => {
+
+      const hotelId = order.hotelId;
+      if (hotelId) {
+        hotelFrequency[hotelId] = (hotelFrequency[hotelId] || 0) + 1;
+      }
+
+      order.items.forEach((item) => {
+        const itemId = item._id;
+        itemFrequency[itemId] = (itemFrequency[itemId] || 0) + item.quantity;
+      });
+    });
+
+    const recommendatedHotelIds = Object.keys(hotelFrequency)
+      .sort((a, b) => hotelFrequency[b] - hotelFrequency[a])
+      .slice(0, 5); 
+
+    const recommendatedItemsIds = Object.keys(itemFrequency)
+      .sort((a, b) => itemFrequency[b] - itemFrequency[a]) 
+      .slice(0, 10); 
+
+    const fetchHotelDetails = async (hotelId) => {
+      try {
+        const response = await axios.get(`http://localhost:3003/api/hotel/getById/${hotelId}`);
+        return response.data; 
+      } catch (error) {
+        console.error(`Error fetching hotel ${hotelId}:`, error.message);
+        return null;
+      }
+    };
+
+    const fetchFoodItemDetails = async (itemId) => {
+      try {
+        const response = await axios.get(`http://localhost:3003/api/hotel/foods/${itemId}`);
+        return response.data; 
+      } catch (error) {
+        console.error(`Error fetching food item ${itemId}:`, error.message);
+        return null;
+      }
+    };
+
+    const recommendedHotels = await Promise.all(
+      recommendatedHotelIds.map((hotelId) => fetchHotelDetails(hotelId))
+    );
+
+    const recommendedItems = await Promise.all(
+      recommendatedItemsIds.map((itemId) => fetchFoodItemDetails(itemId))
+    );
+
+    const filteredHotels = recommendedHotels.filter((hotel) => hotel !== null);
+    const filteredItems = recommendedItems.filter((item) => item !== null);
+
+    res.status(200).json({
+      recommendatedHotelIds,
+      recommendatedItemsIds,
+      recommendedHotels: filteredHotels,
+      recommendedItems: filteredItems,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+
 // Update Driver Location
 app.post('/update-driver-location', async (req, res) => {
   try {
