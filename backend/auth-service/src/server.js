@@ -5,7 +5,10 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 import dbConnection from './config/dbConfig.js';
+
 import driverAndResOwnerRoutes from './routes/resOwnerAndDriver.routes.js';
+import userRoutes from './routes/user.routes.js';
+
 
 dotenv.config();
 
@@ -28,7 +31,12 @@ app.use(cookieParser());
 })();
 
 // Routes setup
+
 app.use('/api/auth', driverAndResOwnerRoutes);
+app.use('/api/auth', userRoutes);
+
+
+
 
 // Health check endpoint
 app.get('/health', (req, res) => {

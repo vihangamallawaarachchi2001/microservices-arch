@@ -221,7 +221,7 @@ export const updateProfile = async (updatedData: any): Promise<any> => {
 
 export const deleteUserAccount = async (): Promise<void> => {
   try {
-    const response = await userAPI.delete("/user"); 
+    const response = await userAPI.delete("/"); 
     if (response.status === 204) {
       window.location.href = "/"; 
     } else {
@@ -243,7 +243,7 @@ export interface Restaurant {
   ordersCount: number;
   isFeatured: boolean;
   price: string;
-  banners: string;
+  banner: string;
   categoriesprovider: string[];
   image: string;
   featured: boolean;
