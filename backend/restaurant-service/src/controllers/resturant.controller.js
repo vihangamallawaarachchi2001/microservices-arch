@@ -1,9 +1,7 @@
 const Hotel = require("../models/resturant.model");
 
-// TODO: Multer setup for file uploads (e.g., banner images)
-
-// Create a new hotel
 exports.createHotel = async (req, res) => {
+  const { userId } = req.user;
   try {
     const {
       hotelName,
@@ -24,9 +22,9 @@ exports.createHotel = async (req, res) => {
     if (!hotelName || !hotelAddress || !location || !opentime) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-
+    
     const newHotel = new Hotel({
-      userID: "123456", // Replace with dynamic user ID if needed
+      userID: userId,
       hotelName,
       hotelAddress,
       metaData,
@@ -161,9 +159,19 @@ exports.updateHotel = async (req, res) => {
 // Delete a hotel by ID
 exports.deleteHotel = async (req, res) => {
   try {
-    const deletedHotel = await Hotel.findByIdAndDelete(req.params.id);
-    if (!deletedHotel) return res.status(404).json({ message: "Hotel not found" });
-    res.status(200).json({ message: "Hotel deleted successfully" });
+    const hotel = await Hotel.findById(req.params.id);
+
+    if(!hotel){
+      return res.status(404).json({ message: "Hotel not found" });
+  1 }
+
+    if(hotel.userID !== req.user.userId){
+      return res.status(403).json({ message: "You are not authorized to delete this hotel" });
+    }
+
+    await Hotel.findByIdAndDelete(req.params.id);
+    res.status(200).json("Hotel deleted successfully");
+    
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
