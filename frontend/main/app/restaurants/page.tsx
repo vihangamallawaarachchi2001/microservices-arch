@@ -210,9 +210,10 @@ export default function RestaurantsPage() {
               {restaurants.map((restaurant) => (
                 <div key={restaurant._id} className="rounded-xl overflow-hidden bg-white shadow-sm">
                   <div className="relative aspect-[4/3]">
-                    <img
+                    <Image
                       src={restaurant.banner}
                       alt={restaurant.hotelName}
+                      fill
                       className="object-cover"
                     />
                     {restaurant.isFeatured && (
