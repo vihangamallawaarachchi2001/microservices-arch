@@ -96,7 +96,7 @@ export default function LoginPage() {
 					router.push("/driver");
 				} else if (userRole === "restaurantOwner") {
 					console.log("pushing res owner");
-					router.push("/resturantOwner");
+					router.push("/restaurantOwner");
 				}
 				return;
 			} else {
@@ -105,7 +105,7 @@ export default function LoginPage() {
 					router.push("/driver");
 				} else if (userRole === "restaurantOwner") {
 					console.log("pushing res owner");
-					router.push("/resturantOwner");
+					router.push("/restaurantOwner");
 				}
 			}
 
