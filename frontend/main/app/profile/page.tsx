@@ -136,6 +136,8 @@ export default function ProfilePage() {
     }
   };
 
+  console.log(profileData)
+
   return (
     <div className="space-y-6">
       {/* Profile Information Card */}

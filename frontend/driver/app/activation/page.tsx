@@ -5,6 +5,8 @@ import Link from "next/link";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/home/footer";
 import { activateAccount, resendOTP } from "@/api";
+import { getCurrentUserRole } from "@/config";
+
 
 export default function ActivationPage() {
   const [otp, setOtp] = useState("");
@@ -33,7 +35,12 @@ export default function ActivationPage() {
     try {
       const response = await activateAccount(email, otp, role);  // role must be passed
       if (response.success) {
-        window.location.href = "/restaurants";
+        const role = getCurrentUserRole();
+        if (role === "driver") {
+          window.location.href = "/driver"; // or your intended driver dashboard route
+        } else {
+          window.location.href = "/restaurantOwner";
+        }
       } else {
         throw new Error(response.message || "Invalid OTP. Please try again.");
       }

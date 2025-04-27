@@ -1,7 +1,6 @@
 const Hotel = require("../models/resturant.model");
 
 exports.createHotel = async (req, res) => {
-  const { userId } = req.user;
   try {
     const {
       hotelName,
@@ -24,11 +23,11 @@ exports.createHotel = async (req, res) => {
     }
     
     const newHotel = new Hotel({
-      userID: userId,
+      userID: "123",
       hotelName,
       hotelAddress,
       metaData,
-      banner: banner || "default_banner_image_url",
+      banner: banner,
       isAuthorized: isAuthorized || false,
       authCertificates: authCertificates || {},
       ordersCount: ordersCount || 0,
@@ -164,10 +163,6 @@ exports.deleteHotel = async (req, res) => {
     if(!hotel){
       return res.status(404).json({ message: "Hotel not found" });
   1 }
-
-    if(hotel.userID !== req.user.userId){
-      return res.status(403).json({ message: "You are not authorized to delete this hotel" });
-    }
 
     await Hotel.findByIdAndDelete(req.params.id);
     res.status(200).json("Hotel deleted successfully");
