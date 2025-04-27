@@ -6,6 +6,9 @@ import { updateHotel } from '@/api';
 import { deleteHotel } from '@/api';
 import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+
+
 
 export default function Hotel() {
   const [hotels, setHotels] = useState([]);
@@ -23,7 +26,7 @@ export default function Hotel() {
     banner: '',
   });
   const fileRef = useRef(null)
-
+  const router = useRouter();
   
 
   const [filters, setFilters] = useState({
@@ -96,8 +99,8 @@ export default function Hotel() {
       
       // 🛠 Properly update the hotels list:
       setHotels(prevHotels =>
-        prevHotels.map(hotel => hotel.id === updatedHotel.id ? updatedHotel : hotel)
-      );
+        prevHotels.map(hotel => hotel._id === updatedHotel._id ? updatedHotel : hotel)
+     );
 
     } else {
       // Create new
@@ -151,6 +154,16 @@ const handleDeleteHotel = async (id) => {
       setEditingHotelId(hotel._id);
       setShowModal(true);
     }
+  };
+
+  const ViewButton = ({ hotelId }) => {
+    const router = useRouter();
+  
+    const handleViewClick = () => {
+      router.push(`/hotels/${hotelId}`);
+    };
+  
+    return <button onClick={handleViewClick}>View</button>;
   };
 
   return (
@@ -221,14 +234,20 @@ const handleDeleteHotel = async (id) => {
 
                   {/* Actions */}
                   <div className="mt-auto flex gap-3">
+                  <button 
+                       className="flex-1 bg-green-600 hover:bg-green-800 text-white font-semibold py-2 px-6 rounded w-full"
+                       onClick={() => router.push(`/hotels/${hotel._id}`)}
+                    >
+                      View
+                    </button>
                     <button 
-                       className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded w-full"
+                       className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded w-full"
                       onClick={() => handleUpdateHotel(hotel)}
                     >
                       Update
                     </button>
                     <button 
-                      className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded  transition"
+                      className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-6 rounded  transition"
                       onClick={() => handleDeleteHotel(hotel._id)}
                     >
                       Delete
