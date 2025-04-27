@@ -10,7 +10,7 @@ const router = express.Router();
  * for
  * backend test
 */
-router.get('/users/all',authGuard, getAllUsersController);  // router.get('/users', authMiddleware , getAllUsersController);
+router.get('/users/all', getAllUsersController);  // router.get('/users', authMiddleware , getAllUsersController);
 router.get('/users/',authGuard , getUserByIdController);  // router.get('/users/:id', authMiddleware , getUserByIdController);
 router.get('/users/:id' , getUserByIdPrController);  // router.get('/users/:id', authMiddleware , getUserByIdController);
 router.put('/users/',authGuard, updateUserController);  // router.put('/users/:id', authMiddleware , updateUserController);

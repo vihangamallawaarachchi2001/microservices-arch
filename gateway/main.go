@@ -74,7 +74,7 @@ func main() {
         proxyRequest(searchService, c)
     })
 
-    r.Run(":3000")
+    r.Run(":8000")
 
 }
 
