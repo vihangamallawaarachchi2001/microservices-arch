@@ -254,7 +254,7 @@ export interface Restaurant {
   ordersCount: number;
   isFeatured: boolean;
   price: string;
-  banners: string;
+  banner: string;
   categoriesprovider: string[];
   image: string;
   featured: boolean;
