@@ -31,7 +31,7 @@ app.use(cookieParser());
 })();
 
 // Routes setup
-app.use('/api', userRoutes);
+app.use('/service', userRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', driverRoutes);
 
