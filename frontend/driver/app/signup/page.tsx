@@ -110,18 +110,38 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: any) => {
     console.log("Submitting...");
-    
     e.preventDefault();
-    //if (!validateForm()) return;
-
+  
+    // Simple validation
+    const form = activeTab === "driver" ? driverForm : ownerForm;
+    if (!form.email || !form.password || !form.username || !form.phoneNumber) {
+      setErrors((prev: any) => ({
+        ...prev,
+        general: "Please fill all required fields.",
+      }));
+      return;
+    }
+  
+    if (!["driver", "restaurantOwner"].includes(activeTab)) {
+      setErrors((prev: any) => ({
+        ...prev,
+        general: "Invalid role selected.",
+      }));
+      return;
+    }
+  
     setIsLoading(true);
     try {
-      const dataToSubmit = activeTab === "driver" ? driverForm : ownerForm;
-      console.log("form data",ownerForm);
-      
+      const dataToSubmit = {
+        ...form,
+        role: activeTab,
+      };
+  
+      console.log("Submitting form data", dataToSubmit);
+  
       const response = await signup(dataToSubmit);
-      if (response?.data?.email) {
-        router.push(`/activation?email=${response.data.email}`);
+      if (response?.data?.email && response?.data?.role) {
+        router.push(`/activation?email=${response.data.email}&role=${response.data.role}`);
       } else {
         throw new Error("Unexpected server response");
       }
@@ -134,7 +154,7 @@ export default function SignUpPage() {
       setIsLoading(false);
     }
   };
-
+  
   const renderInput = (
     label: string,
     name: string,
