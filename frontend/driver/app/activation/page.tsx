@@ -11,19 +11,27 @@ export default function ActivationPage() {
   const [errors, setErrors] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const searchParams: any = useSearchParams();
-  const email = searchParams?.get("email");
+  const searchParams: any = useSearchParams(); 
+  const email = searchParams.get("email");
+  const role = searchParams.get("role");
 
+
+  console.log("role",role);
+  
   const handleSubmitOtp = async () => {
     if (!otp.trim()) {
       setErrors("Please enter the OTP.");
       return;
     }
   
+    if (!role) {
+      setErrors("Role is missing.");
+      return;
+    }
+  
     setIsLoading(true);
     try {
-      const response = await activateAccount(email, otp);
-  
+      const response = await activateAccount(email, otp, role);  // role must be passed
       if (response.success) {
         window.location.href = "/restaurants";
       } else {
@@ -36,6 +44,7 @@ export default function ActivationPage() {
       setIsLoading(false);
     }
   };
+  
 
    const handleResendOTP = async () => {
     

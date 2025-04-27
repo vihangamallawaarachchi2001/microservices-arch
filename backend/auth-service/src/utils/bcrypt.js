@@ -14,6 +14,8 @@ export const hashPassword = async (password) => {
 };
 
 export const verifyPassword = async (userPassword, dbPassword) => {
+    console.log("user password : "+userPassword)
+    console.log("db password : "+dbPassword)
     if (!userPassword || !dbPassword) {
         throw new ApiError(400, "Password comparison failed: Missing input.");
     }
