@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter , useParams } from 'next/navigation';
-import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { useEffect, useState, ChangeEvent, FormEvent, useRef } from 'react';
 import axios from 'axios';
 
 
@@ -10,7 +10,7 @@ interface FoodItem {
   foodName: string;
   price: number;
   description: string;
-  images: string[];
+  images: string;
   categoryName: string;
 }
 
@@ -26,6 +26,7 @@ export default function HotelDetailPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [foodItems, setFoodItems] = useState<FoodItem[]>([]);
   const router = useRouter();
+  const fileRef = useRef(null);
 
 
   const fetchFoodItems = async () => {
@@ -88,7 +89,7 @@ export default function HotelDetailPage() {
             {foodItems.map((item) => (
               <div key={item._id} className="bg-gray-800 p-4 rounded-lg shadow-md">
                 {item.images?.length > 0 && (
-                  <img src={item.images[0]} alt={item.foodName} className="w-full h-40 object-cover rounded-md mb-3" />
+                  <img src={item.images} alt={item.foodName} className="w-full h-40 object-cover rounded-md mb-3" />
                 )}
                 <h3 className="text-xl font-bold mb-2">{item.categoryName}</h3>
                 <p className="text-green-400 font-semibold mb-2">${item.price}</p>
@@ -115,7 +116,7 @@ function AddMenuModal({ hotelId, onClose, onFoodAdded }: AddMenuModalProps) {
   const [formData, setFormData] = useState({
     categoryName: '',
     foodName: '',
-    images: [] as string[],
+    images: null as File | null,
     price: '',
     description: '',
     prepTime: '',
@@ -170,8 +171,23 @@ function AddMenuModal({ hotelId, onClose, onFoodAdded }: AddMenuModalProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      let imageUrl = '';
+
+      if (formData.images) {
+        const data = new FormData();
+        data.append('file', formData.images);
+        data.append('upload_preset', 'user_profile_photos'); // <- replace with your Cloudinary unsigned preset
+  
+        const cloudinaryRes = await axios.post('https://api.cloudinary.com/v1_1/dxhzkog1c/image/upload', data);
+  
+        imageUrl = cloudinaryRes.data.secure_url;
+
+        console.log(imageUrl);
+        
+      }
       await axios.post('http://localhost:3003/api/hotel/foods', {
         ...formData,
+        images: imageUrl,
         price: Number(formData.price),
         rating: Number(formData.rating),
         nutritionalInfo: {
@@ -209,7 +225,17 @@ function AddMenuModal({ hotelId, onClose, onFoodAdded }: AddMenuModalProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <input type="text" name="categoryName" placeholder="Category Name" value={formData.categoryName} onChange={handleChange} className={input} required />
             <input type="text" name="foodName" placeholder="Food Name" value={formData.foodName} onChange={handleChange} className={input} required />
-            <input type="text" name="images" placeholder="Image URLs (comma separated)" value={formData.images.join(', ')} onChange={(e) => handleArrayChange('images', e.target.value)} className={input} />
+            <input 
+              type="file" 
+              accept="image/*" 
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setFormData(prev => ({ ...prev, images: file }));
+                }
+              }} 
+              className={input}
+            />
             <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} className={input} required />
           </div>
 
