@@ -7,6 +7,7 @@ import dbConnection from "./config/dbConfig.js";
 import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.route.js'
 import driverRoutes from './routes/driver.route.js';
+import hotelOwnerRoutes from './routes/hotelOwner.route.js';
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const app = express();
 
 // Middleware setup
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost:3005',
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
 
@@ -31,9 +32,10 @@ app.use(cookieParser());
 })();
 
 // Routes setup
-app.use('/service', userRoutes);
+app.use('/api', userRoutes);
 app.use('/api', adminRoutes);
 app.use('/api', driverRoutes);
+app.use('/api', hotelOwnerRoutes);
 
 // Health check endpoint
 app.get('/health', (req, res) => {
