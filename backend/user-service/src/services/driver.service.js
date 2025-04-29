@@ -30,6 +30,7 @@ export const getDriverById = async (email) => {
 
 export const updateDriver = async (id, data)=> {
   try {
+    console.log(id, data)
     const drivers = await Driver.findByIdAndUpdate(id, data, { new: true });
     return drivers 
       ? { success: true, data: drivers } 
