@@ -16,8 +16,10 @@ type Service = keyof typeof SERVICE_PORTS;
 const createApiClient = (service: Service): AxiosInstance => {
   const baseURL = IS_DEV
     ? `http://localhost:${SERVICE_PORTS[service]}/api/${service}`
-    : `/api/${service}`;
+    : `http://localhost:8000/api/${service}`;
 
+    // production code please do not touch this
+    //`/api/${service}`;
   const client = axios.create({
     baseURL,
     withCredentials: true, 
