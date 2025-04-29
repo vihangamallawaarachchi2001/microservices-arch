@@ -42,12 +42,15 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
+import DriverModal from "@/components/DriverModal";
+import CustomerOrdersModal from "@/components/CustomerOrdersModel";
+import CustomerModal from "@/components/CustomerModel";
 
 // Base URL for the Gateway API
 const BASE_URL = "http://localhost:3002/api"; // Replace with your Gateway API URL
 
 // Fetch data from the backend with fallback logic
-const fetchData = async (endpoint) => {
+const fetchData = async (endpoint: any) => {
   try {
     const response = await axios.get(`${BASE_URL}${endpoint}`);
     return response.data;
@@ -59,7 +62,7 @@ const fetchData = async (endpoint) => {
 };
 
 // Fallback mock data for different endpoints
-const getMockData = (endpoint) => {
+const getMockData = (endpoint: any) => {
   switch (endpoint) {
     case "/drivers":
       return [
@@ -133,11 +136,17 @@ export default function UsersPage() {
   const [activeTab, setActiveTab] = useState("drivers");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [users, setUsers] = useState({
+  const [users, setUsers] = useState<any>({
     drivers: [],
     customers: [],
     hotelOwners: [],
   });
+  const [modalOpen, setModalOpen] = useState(false);
+  const [driverData, setDriverData] = useState<any>(null);
+  const [modalOpenCustomer, setModalOpenCustomer] = useState(false);
+  const [customerData, setCustomerData] = useState<any>(null);
+  const [orders, setOrders] = useState([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
 
   // Fetch data from the backend on component mount
   useEffect(() => {
@@ -149,37 +158,137 @@ export default function UsersPage() {
       if (!drivers || !customers || !hotelOwners) {
         alert("Error fetching data. Displaying fallback data.");
       }
+      console.log("drivers");
       console.log(drivers);
-      console.table(customers);
-      console.table(hotelOwners);
+      console.log("oters");
+      // console.table(customers);
+      // console.table(hotelOwners);
 
-      setUsers({ drivers, customers, hotelOwners });
+      setUsers({ drivers: drivers.data, customers, hotelOwners });
     };
 
     fetchAllUsers();
   }, []);
 
   // Filter users based on search term and status
-  const filteredUsers = users[activeTab]?.filter((user: any) => {
+  const filteredUsers: any = users[activeTab]?.filter((user: any) => {
     const matchesSearch =
-      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.phone?.includes(searchTerm);
+      user.phoneNo?.includes(searchTerm);
     const matchesStatus =
       statusFilter === "all" || user.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   // Toggle driver authorization
-  const toggleDriverAuthorization = (driverId: any) => {
-    setUsers((prev: any) => ({
-      ...prev,
-      drivers: prev.drivers.map((driver) =>
-        driver.id === driverId
-          ? { ...driver, isAuthorized: !driver.isAuthorized }
-          : driver
-      ),
-    }));
+  const toggleDriverAuthorization = async (driverId: any) => {
+    try {
+      const driver = users.drivers.find((d: any) => d._id === driverId);
+      const newAuthorizationStatus = !driver.isAuthorized;
+
+      // Call the backend to update authorization
+      await axios.put(`${BASE_URL}/drivers/${driverId}/authorize`, {
+        isAuthorized: newAuthorizationStatus,
+      });
+
+      // Update the state locally
+      setUsers((prev: any) => ({
+        ...prev,
+        drivers: prev.drivers.map((d: any) =>
+          d.id === driverId ? { ...d, isAuthorized: newAuthorizationStatus } : d
+        ),
+      }));
+    } catch (error) {
+      console.error("Failed to update authorization:", error);
+      alert("Failed to update authorization. Please try again.");
+    }
+  };
+
+  // View Driver Details
+  const viewDriverDetails = async (driverEmail: any) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/users/drivers/${driverEmail}`
+      );
+      setDriverData(response.data);
+      setModalOpen(true);
+    } catch (error) {
+      console.error("Failed to fetch driver details:", error);
+      alert("Failed to fetch driver details. Please try again.");
+    }
+  };
+
+  const deactivateDriver = async (driverId: string, currentStatus: boolean) => {
+    try {
+      const confirmMsg = currentStatus
+        ? "Are you sure you want to deactivate this driver?"
+        : "Do you want to reactivate this driver?";
+
+      const confirmAction = confirm(confirmMsg);
+      if (!confirmAction) return;
+
+      const response = await axios.put(
+        `${BASE_URL}/drivers/${driverId}/activationByAdmin`,
+        { isActive: !currentStatus }
+      );
+
+      alert(response.data.message || "Driver activation status updated.");
+    } catch (error) {
+      console.error("Failed to update driver activation:", error);
+      alert("Failed to update driver status. Please try again.");
+    }
+  };
+
+  //TODO change the port correctly
+  const viewCustomerOrders = async (customerId: string) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/orders/user/${customerId}`);
+      setOrders(response.data || []);
+      setSelectedCustomerId(customerId);
+      setModalOpen(true);
+    } catch (error) {
+      console.error("Failed to fetch customer orders:", error);
+      alert("Failed to fetch customer orders. Please try again.");
+    }
+  };
+
+  const viewCustomerDetails = async (customerId: any) => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/users/${customerId}/activationByAdmin`
+      );
+      setCustomerData(response);
+      console.log(response.data);
+      setModalOpenCustomer(true);
+    } catch (error) {
+      console.error("Failed to fetch driver details:", error);
+      alert("Failed to fetch driver details. Please try again.");
+    }
+  };
+
+  const deactivateCustomer = async (
+    customerId: string,
+    currentStatus: boolean
+  ) => {
+    try {
+      const confirmMsg = currentStatus
+        ? "Are you sure you want to deactivate this customer?"
+        : "Do you want to reactivate this customer?";
+
+      const confirmAction = confirm(confirmMsg);
+      if (!confirmAction) return;
+
+      const response = await axios.put(
+        `${BASE_URL}/users/${customerId}/activationByAdmin`,
+        { isActive: !currentStatus }
+      );
+
+      alert(response.data.message || "Customer activation status updated.");
+    } catch (error) {
+      console.error("Failed to update customer activation:", error);
+      alert("Failed to update customer status. Please try again.");
+    }
   };
 
   return (
@@ -265,10 +374,10 @@ export default function UsersPage() {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredUsers?.map((driver) => (
+                        filteredUsers?.map((driver: any) => (
                           <TableRow key={driver.id}>
                             <TableCell className="font-medium">
-                              {driver.usernmame}
+                              {driver.username}
                             </TableCell>
                             <TableCell>{driver.email}</TableCell>
                             <TableCell className="hidden md:table-cell">
@@ -280,9 +389,9 @@ export default function UsersPage() {
                             <TableCell>
                               <Badge
                                 variant={
-                                  driver.isActive 
+                                  driver.isActive
                                     ? "default"
-                                    : !driver.isActive 
+                                    : !driver.isActive
                                     ? "outline"
                                     : "secondary"
                                 }
@@ -294,7 +403,7 @@ export default function UsersPage() {
                                     : "bg-gray-100 text-gray-800 hover:bg-gray-100"
                                 }
                               >
-                                {driver.isActive ? "Active": "Inactive"}
+                                {driver.isActive ? "Active" : "Inactive"}
                               </Badge>
                             </TableCell>
                             <TableCell>
@@ -329,7 +438,7 @@ export default function UsersPage() {
                                           className="text-blue-500"
                                           onClick={() =>
                                             window.open(
-                                              cloudinaryLink,
+                                              cloudinaryLink as string,
                                               "_blank"
                                             )
                                           } // Open the Cloudinary link in a new tab
@@ -360,17 +469,32 @@ export default function UsersPage() {
                                   <DropdownMenuSeparator />
                                   <DropdownMenuItem
                                     onClick={() =>
-                                      toggleDriverAuthorization(driver.id)
+                                      toggleDriverAuthorization(driver._id)
                                     }
                                   >
                                     {driver.isAuthorized
                                       ? "Revoke Authorization"
                                       : "Authorize Driver"}
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      viewDriverDetails(driver.email)
+                                    }
+                                  >
                                     View Details
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>Edit User</DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      deactivateDriver(
+                                        driver._id,
+                                        driver.isActive
+                                      )
+                                    }
+                                  >
+                                    {driver.isActive
+                                      ? "Deactivate"
+                                      : " Activate"}
+                                  </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </TableCell>
@@ -407,35 +531,33 @@ export default function UsersPage() {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredUsers?.map((customer) => (
-                          <TableRow key={customer.id}>
+                        filteredUsers?.map((customer: any) => (
+                          <TableRow key={customer._id}>
                             <TableCell className="font-medium">
-                              {customer.name}
+                              {customer.username}
                             </TableCell>
                             <TableCell>{customer.email}</TableCell>
                             <TableCell className="hidden md:table-cell">
-                              {customer.phone}
+                              {customer.phoneNo}
                             </TableCell>
                             <TableCell className="hidden md:table-cell">
-                              {customer.joinedAt}
+                              {customer.createdAt}
                             </TableCell>
                             <TableCell>
                               <Badge
                                 variant={
-                                  customer.status === "active"
-                                    ? "default"
-                                    : "secondary"
+                                  customer.isActive ? "default" : "secondary"
                                 }
                                 className={
-                                  customer.status === "active"
+                                  customer.isActive
                                     ? "bg-green-100 text-green-800 hover:bg-green-100"
                                     : "bg-gray-100 text-gray-800 hover:bg-gray-100"
                                 }
                               >
-                                {customer.status}
+                                {customer.isActive ? "Active" : "Inactive"}
                               </Badge>
                             </TableCell>
-                            <TableCell>{customer.orders}</TableCell>
+                            <TableCell>orders</TableCell>
                             <TableCell className="text-right">
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
@@ -450,13 +572,27 @@ export default function UsersPage() {
                                 <DropdownMenuContent align="end">
                                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                   <DropdownMenuSeparator />
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      viewCustomerDetails(customer._id)
+                                    }
+                                  >
                                     View Details
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() =>
+                                      viewCustomerOrders(customer._id)
+                                    }
+                                  >
                                     View Orders
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>Edit User</DropdownMenuItem>
+                                  <DropdownMenuItem
+                                    onClick={() => deactivateCustomer(customer._id, customer.isActive)}
+                                  >
+                                   {
+                                    customer.isActive ? "Deactivate" : "Activate"
+                                  }
+                                  </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </TableCell>
@@ -493,36 +629,36 @@ export default function UsersPage() {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredUsers?.map((owner) => (
+                        filteredUsers?.map((owner: any) => (
                           <TableRow key={owner.id}>
                             <TableCell className="font-medium">
-                              {owner.name}
+                              {owner.username}
                             </TableCell>
                             <TableCell>{owner.email}</TableCell>
                             <TableCell className="hidden md:table-cell">
-                              {owner.phone}
+                              {owner.phoneNo}
                             </TableCell>
                             <TableCell className="hidden md:table-cell">
-                              {owner.joinedAt}
+                              {owner.createdAt}
                             </TableCell>
                             <TableCell>
                               <Badge
                                 variant={
-                                  owner.status === "active"
+                                  owner.isActive
                                     ? "default"
-                                    : owner.status === "pending"
+                                    : owner.isActive === false
                                     ? "outline"
                                     : "secondary"
                                 }
                                 className={
-                                  owner.status === "active"
+                                  owner.isActive 
                                     ? "bg-green-100 text-green-800 hover:bg-green-100"
-                                    : owner.status === "pending"
+                                    : !owner.isActive
                                     ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                                     : "bg-gray-100 text-gray-800 hover:bg-gray-100"
                                 }
                               >
-                                {owner.status}
+                                {owner.isActive ? "Active" : "Inactive"}
                               </Badge>
                             </TableCell>
                             <TableCell>{owner.hotels}</TableCell>
@@ -546,7 +682,6 @@ export default function UsersPage() {
                                   <DropdownMenuItem>
                                     View Hotels
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>Edit User</DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </TableCell>
@@ -561,6 +696,21 @@ export default function UsersPage() {
           </CardContent>
         </Card>
       </div>
+      <DriverModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        driverData={driverData}
+      />
+      <CustomerModal
+        isOpen={modalOpenCustomer}
+        onClose={() => setModalOpenCustomer(false)}
+        driverData={customerData}
+      />
+      <CustomerOrdersModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        orders={orders}
+      />
     </div>
   );
 }

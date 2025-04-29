@@ -1,4 +1,5 @@
 
+import Driver from '../models/Driver.js';
 import { 
   getAllDrivers,
   getDriverById,
@@ -8,11 +9,14 @@ import {
 
 
 export const getAllDriversController = async (req, res) => {
-  const result = await getAllDrivers();
-  result.success 
-    ? res.status(200).json(result.data)
-    : res.status(500).json({ error: result.error });
+  try {
+    const drivers = await Driver.find();
+    res.status(200).json({ success: true, data: drivers });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
+
 
 export const getDriverByIdController = async (req, res) => {
   const { email } = req.params;

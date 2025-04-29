@@ -316,7 +316,7 @@ app.get('/orders/user/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
     const orders = await Order.find({ userId });
-    if (!orders.length) return res.status(404).json({ error: 'No orders found for this user' });
+    if (!orders.length) return res.status(204).json({ error: 'No orders found for this user' });
     res.json(orders);
   } catch (error) {
     console.error('Error fetching orders by user ID:', error);
