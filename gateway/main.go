@@ -4,36 +4,26 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"os"
 	"path"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
 
 func main() {
 	// Load environment variables
-	err := godotenv.Load()
-	if err != nil {
-		panic("Error loading .env file")
-	}
-
-	env := os.Getenv("ENV")
-	if env == "" {
-		env = "development"
-	}
+	
 
 	// Services
-	authService := os.Getenv("AUTH_SERVICE")
-	userService := os.Getenv("USER_SERVICE")
-	hotelService := os.Getenv("HOTEL_SERVICE")
-	reviewService := os.Getenv("REVIEW_SERVICE")
-	orderService := os.Getenv("ORDER_SERVICE")
-	paymentService := os.Getenv("PAYMENT_SERVICE")
-	notificationService := os.Getenv("NOTIFICATION_SERVICE")
-	searchService := os.Getenv("SEARCH_SERVICE")
+	authService := "http://localhost:3001"
+	userService := "http://localhost:3002"
+	hotelService := "http://localhost:3003"
+	reviewService := "http://localhost:3004"
+	orderService := "http://localhost:3005"
+	paymentService := "http://localhost:3006"
+	notificationService := "http://localhost:3007"
+	searchService := "http://localhost:3008"
 
 	// Create router
 	r := gin.Default()

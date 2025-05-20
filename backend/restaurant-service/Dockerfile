@@ -9,6 +9,7 @@ COPY package.json ./
 RUN pnpm install
 
 COPY . .
+COPY .env .env
 
 EXPOSE 3003
 
