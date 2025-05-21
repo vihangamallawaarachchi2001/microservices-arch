@@ -72,7 +72,7 @@ export default function Partners() {
               ))}
             </ul>
             <Link 
-              href="/restaurants/studio" 
+              href="http://localhost:5002/" 
               className="btn btn-secondary w-full"
             >
               Register Your Restaurant

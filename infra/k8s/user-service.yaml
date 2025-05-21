@@ -1,11 +1,9 @@
-# user-service.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
-  namespace: microservices-arch
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: user-service
@@ -15,34 +13,37 @@ spec:
         app: user-service
     spec:
       containers:
-      - name: user-service
-        image:  vihanm0120/microservices-arch-user-service:latest
-        ports:
-        - containerPort: 3000
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 5
+        - name: user-service
+          image: vihanm0120/user:latest
+          ports:
+            - containerPort: 3002
+          env:
+            - name: DB_URL
+              value: "mongodb+srv://sksv:sksvD@cluster0.zychm.mongodb.net/userDB?retryWrites=true&w=majority&appName=Cluster0"
+            - name: JWT_SECRET
+              value: "sksvDeveloper"
+            - name: SMTP_SERVER
+              value: "smtp-relay.brevo.com"
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_LOGIN
+              value: "vihanganethusara00@gmail.com"
+            - name: SMTP_KEY
+              value: "xsmtpsib-..."
+            - name: SMTP_KEY_NAME
+              value: "quickbite"
+            - name: STRIPE_SECRET_KEY
+              value: "sk_test_..."
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: user-service
-  namespace: microservices-arch
 spec:
   selector:
     app: user-service
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
-  type: ClusterIP
+    - protocol: TCP
+      port: 80
+      targetPort: 3002

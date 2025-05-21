@@ -20,7 +20,7 @@ export default function DriverDashboard() {
 
     
     const updateLocation = () => {
-      const DRIVER_ID = JSON.parse(localStorage.getItem('userProfile') as string)._id;
+      const DRIVER_ID = JSON.parse(localStorage.getItem('userProfile') as string).userId;
       if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {

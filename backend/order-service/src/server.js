@@ -142,7 +142,7 @@ app.post("/order/save-order", async (req, res) => {
     const hotelId = items[0].hotelId;
     console.log(hotelId);
     const hotelResponse = await axios.get(
-      `http://localhost:3000/api/hotel/getById/${hotelId}`
+      `http://gateway:3000/api/hotel/getById/${hotelId}`
     );
     const hotel = hotelResponse.data;
     if (!hotel) return res.status(404).json({ error: "Hotel not found" });
@@ -153,7 +153,7 @@ app.post("/order/save-order", async (req, res) => {
 
     // Fetch available drivers
     const driverResponse = await axios.get(
-      "http://localhost:3000/api/users/drivers"
+      "http://gateway:3000/api/users/drivers"
     );
     console.log(driverResponse.data);
     const availableDrivers = driverResponse.data.data;
@@ -249,7 +249,7 @@ app.get("/order/recommendations/:userId", async (req, res) => {
     const fetchHotelDetails = async (hotelId) => {
       try {
         const response = await axios.get(
-          `http://localhost:3003/api/hotel/getById/${hotelId}`
+          `http://gateway:3000/api/hotel/getById/${hotelId}`
         );
         return response.data;
       } catch (error) {
@@ -261,7 +261,7 @@ app.get("/order/recommendations/:userId", async (req, res) => {
     const fetchFoodItemDetails = async (itemId) => {
       try {
         const response = await axios.get(
-          `http://localhost:3003/api/hotel/foods/${itemId}`
+          `http://gateway:3000/api/hotel/foods/${itemId}`
         );
         return response.data;
       } catch (error) {

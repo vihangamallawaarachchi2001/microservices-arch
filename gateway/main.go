@@ -16,14 +16,14 @@ func main() {
 	
 
 	// Services
-	authService := "http://localhost:3001"
-	userService := "http://localhost:3002"
-	hotelService := "http://localhost:3003"
-	reviewService := "http://localhost:3004"
-	orderService := "http://localhost:3005"
-	paymentService := "http://localhost:3006"
-	notificationService := "http://localhost:3007"
-	searchService := "http://localhost:3008"
+	authService := "http://auth-service:3001"
+	userService := "http://user-service:3002"
+	hotelService := "http://restaurant-service:3003" 
+	reviewService := "http://review-service:3004"
+	orderService := "http://order-service:3005"
+	paymentService := "http://payment-service:3006"
+	notificationService := "http://notification-service:3007"
+	searchService := "http://search-service:3008"
 
 	// Create router
 	r := gin.Default()
