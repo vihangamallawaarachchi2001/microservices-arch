@@ -1,11 +1,9 @@
-# review-service.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: review-service
-  namespace: microservices-arch
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: review-service
@@ -15,34 +13,22 @@ spec:
         app: review-service
     spec:
       containers:
-      - name: review-service
-        image:  vihanm0120/microservices-arch-review-service:latest
-        ports:
-        - containerPort: 8080
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "200m"
-          limits:
-            memory: "1Gi"
-            cpu: "800m"
-        livenessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        - name: review-service
+          image: vihanm0120/review:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://sksv:sksvD@cluster0.zychm.mongodb.net/review&feedbackDB?retryWrites=true&w=majority&appName=Cluster0"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: review-service
-  namespace: microservices-arch
 spec:
   selector:
     app: review-service
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-  type: ClusterIP
+    - protocol: TCP
+      port: 80
+      targetPort: 3000

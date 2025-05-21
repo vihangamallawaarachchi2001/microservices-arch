@@ -49,7 +49,7 @@ export default function CartPage() {
   useEffect(() => {
     const total = cartItems
       .filter((item) => selectedItems.includes(item.id))
-      .reduce((sum, item) => sum + item.price * item.quantity, 0);
+      .reduce((sum, item) => sum + item.price, 0);
     setTotalAmount(total);
     localStorage.setItem("totalAmount", JSON.stringify(total));
   }, [selectedItems, cartItems]);
@@ -188,11 +188,11 @@ export default function CartPage() {
                     <span className="font-medium">{item.quantity}</span>
                   </p>
                   <p className="text-base font-semibold text-secondary-600 mb-2">
-                    ${((item.price * item.quantity) / 100)* 100}
+                    ${((item.price) / 100)* 100}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500">
                     Added:{" "}
-                    <span>{getRandomPastDate().toLocaleDateString()}</span>
+                    <span>{new Date().toLocaleDateString()}</span>
                   </p>
                 </div>
               </div>

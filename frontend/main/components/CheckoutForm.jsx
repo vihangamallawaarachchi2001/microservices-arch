@@ -6,7 +6,7 @@ import { useState } from 'react';
 export default function CheckoutForm({ selectedItems }) {
   const stripe = useStripe();
   const elements = useElements();
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {

@@ -40,6 +40,10 @@ export default function FoodItemPage() {
     if (favHotels.includes(params.restaurantId as string)) {
       setIsFavorite(true);
     }
+
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    const isInCart = cartItems.some((item:any)=>item.id===itemId);
+    setCartAvailable(isInCart);
     const fetchData = async () => {
 
       try {
@@ -111,7 +115,6 @@ export default function FoodItemPage() {
   if (existingItemIndex !== -1) {
     // Item exists — remove it
     cartItems.splice(existingItemIndex, 1);
-    setCartAvailable(false);
     alert(`${foodItem?.foodName} removed from cart!`);
   } else {
     // Item doesn't exist — add it
@@ -124,11 +127,11 @@ export default function FoodItemPage() {
       hotelId: foodItem?.hotelID,
     };
     cartItems.push(cartItem);
-    setCartAvailable(true);
     alert(`${quantity} x ${foodItem?.foodName} added to cart!`);
   }
 
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  setCartAvailable(cartItems.length > 0);
 };
 
 
@@ -273,12 +276,12 @@ export default function FoodItemPage() {
                     cartAvailable ? (
                       <span className="flex items-center">
                         <ShoppingCart className="mr-2 h-4 w-4" />
-                        Add to Cart
+                        Remove From Cart
                       </span>
                     ) : (
                       <span className="flex items-center">
                         <ShoppingCart className="mr-2 h-4 w-4" />
-                        Remove From Cart
+                        Add To Cart
                       </span>
                     )
                   }

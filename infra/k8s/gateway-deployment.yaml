@@ -1,26 +1,24 @@
-# infra/k8s/auth-service-deployment.yaml
+# infra/k8s/gateway-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-service
+  name: gateway
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: auth-service
+      app: gateway
   template:
     metadata:
       labels:
-        app: auth-service
+        app: gateway
     spec:
       containers:
-        - name: auth-service
-          image: vihanm0120/auth:latest
+        - name: gateway
+          image: vihanm0120/gateway:latest
           ports:
-            - containerPort: 3001
+            - containerPort: 3000
           env:
-            - name: DB_URL
-              value: "mongodb+srv://sksv:sksvD@cluster0.zychm.mongodb.net/authDB?retryWrites=true&w=majority&appName=Cluster0"
             - name: JWT_SECRET
               value: "sksvDeveloper"
             - name: SMTP_SERVER
@@ -31,20 +29,29 @@ spec:
               value: "vihanganethusara00@gmail.com"
             - name: SMTP_KEY
               value: "xsmtpsib-..."
-            - name: SMTP_KEY_NAME
-              value: "quickbite"
             - name: STRIPE_SECRET_KEY
               value: "sk_test_..."
+            - name: AUTH_SERVICE
+              value: "http://auth-service:3001"
+            - name: USER_SERVICE
+              value: "http://user-service:3002"
+            - name: HOTEL_SERVICE
+              value: "http://restaurant-service:3003"
+            - name: REVIEW_SERVICE
+              value: "http://review-service:3004"
+            - name: ORDER_SERVICE
+              value: "http://order-service:3005"
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-service
+  name: gateway
 spec:
+  type: LoadBalancer
   selector:
-    app: auth-service
+    app: gateway
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3001
+      targetPort: 3000
